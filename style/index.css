@@ -1,0 +1,110 @@
+li {
+  list-style: none;
+}
+
+a {
+    text-decoration: none;
+    transition: 0.3s;
+    color: #24292e;
+}
+
+.index-logo {
+  height: 50px;
+}
+
+.recipe:hover {
+  box-shadow: 0px 20px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+}
+
+:root{
+  --bs-primary: #FFA548;
+}
+
+.login-card{
+  max-width: min(90%, 640px);
+  margin: 2rem auto;
+}
+
+.btn-primary {
+  background-color: #FFA548;
+  border-color: #FFA548;
+}
+
+.btn-primary:hover {
+  background-color: #FFA548;
+  border-color: #FFA548;
+}
+
+.contents {
+  margin-top: 50px;
+}
+
+/*rezept.html*/
+.recipe-detail img{
+  width: 100%;
+  height: 620px;
+  object-fit: cover;
+}
+
+/* favorite.html*/
+.favoriten{
+  padding: 30px 0;
+}
+
+.fav-list{
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.fav-list .item {
+  width: 31.5%;
+  box-shadow: 0 3px 21px rgba(0, 0, 0, 0.16);
+}
+
+.fav-list .item img {
+  width: 100%;
+    /* height: 250px; */
+    object-fit: cover;
+}
+
+.item-detail {
+  padding: 15px 20px;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; */
+}
+
+.item-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  /* margin-bottom: 8px; */
+}
+
+footer {
+  margin-top: 40px;
+  background-color: #fff;
+  color: #666;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .fav-list {
+    flex-direction: column;
+  }
+  .fav-list .item{
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .fav-list img {
+    height: 180px;
+  }
+  .ingredients-steps {
+    grid-template-columns: 1fr;
+  }
+  .recipe-hero img {
+    height: 220px;
+  }
+}

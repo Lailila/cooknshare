@@ -1,0 +1,9 @@
+# uploads - user generated files
+uploads/
+
+# config with database credentials
+config.php
+
+# OS files
+.DS_Store
+Thumbs.db
