@@ -1,5 +1,6 @@
 # uploads - user generated files
-uploads/
+uploads/*
+!uploads/.gitkeep
 
 # config with database credentials
 config.php
