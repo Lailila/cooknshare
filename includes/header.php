@@ -1,3 +1,5 @@
+<?php session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +23,7 @@
         </a>
 
         <div class="navbar-collapse d-flex">
+        <?php if(isset($_SESSION["user"])): ?>
           <ul class="navbar-nav me-auto mb-2 mb-sm-0">
             <li class="nav-item">
               <a class="nav-link" href="../pages/dashboard.php">Dashboard</a>
@@ -39,11 +42,18 @@
             </li>
           </ul>
 
-          <a class="nav-link" href="../pages/login.php">
-            <button class="btn btn-secondary">Login / Registrieren</button>
+          <a href="../pages/logout.php">
+            <button class="btn btn-secondary">Abmelden</button>
           </a>
-        </div>
-
+          <?php else: ?>
+            <div class="ms-auto">
+            <a class="nav-link" href="../pages/login.php">
+              <button class="btn btn-secondary">Login / Registrieren</button>
+            </a>
+          </div>
+        <?php endif; ?>
+      
+      </div>
       </div>
     </nav>
   </header>
