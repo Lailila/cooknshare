@@ -1,4 +1,5 @@
-<?php 
+<?php
+require __DIR__ . "/../includes/secure.php"; 
 $currentPage = 'dashboard';
 require __DIR__ . "/../includes/header.php"; ?>
 

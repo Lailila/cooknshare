@@ -1,4 +1,5 @@
-<?php 
+<?php
+require __DIR__ . "/../includes/secure.php"; 
 $currentPage = 'upload';
 require __DIR__ . "/../includes/header.php"; ?>
   <div class="align-items-center p-5">

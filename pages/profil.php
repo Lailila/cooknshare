@@ -1,4 +1,5 @@
-<?php 
+<?php
+require __DIR__ . "/../includes/secure.php"; 
 $currentPage = 'profil';
 require __DIR__ . "/../includes/header.php"; ?>
   <div class="align-items-center vh-100 justify-content-between d-flex">

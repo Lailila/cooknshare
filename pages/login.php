@@ -1,4 +1,6 @@
-<?php require __DIR__ . "/../includes/header.php"; ?>
+<?php 
+session_start();
+require __DIR__ . "/../includes/header.php"; ?>
 <div class="container py-5">
 <!--Login-Bereich-->
       <h3 class="h3 text-center mb-3">Login</h3>

@@ -1,4 +1,6 @@
 <?php 
+$requiredRole = "admin";
+require __DIR__ . "/../includes/secure.php";
 $currentPage = 'admin';
 require __DIR__ . "/../includes/header.php"; ?>
   <div class="container-fluid p-5">
