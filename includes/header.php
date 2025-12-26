@@ -1,4 +1,6 @@
 <?php session_start();
+//$_SESSION['user'] = 'test';
+//$_SESSION['role'] = 'admin';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,20 +28,25 @@
         <?php if(isset($_SESSION["user"])): ?>
           <ul class="navbar-nav me-auto mb-2 mb-sm-0">
             <li class="nav-item">
-              <a class="nav-link" href="../pages/dashboard.php">Dashboard</a>
+              <a class="nav-link <?= ($currentPage === 'dashboard') ? 'active' : '' ?>" href="../pages/dashboard.php">Dashboard</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../pages/favorite.php">Favoriten</a>
+              <a class="nav-link <?= ($currentPage === 'favorite') ? 'active' : '' ?>" href="../pages/favorite.php">Favoriten</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../pages/upload.php">Upload</a>
+              <a class="nav-link <?= ($currentPage === 'upload') ? 'active' : '' ?>" href="../pages/upload.php">Upload</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../pages/profil.php">Profil</a>
+              <a class="nav-link <?= ($currentPage === 'profil') ? 'active' : '' ?>" href="../pages/profil.php">Profil</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../pages/MRezepte.php">Meine Rezepte</a>
+              <a class="nav-link <?= ($currentPage === 'meine-rezepte') ? 'active' : '' ?>" href="../pages/MRezepte.php">Meine Rezepte</a>
             </li>
+            <?php if($_SESSION['role'] === 'admin'): ?>
+              <li class="nav-item">
+                <a class="nav-link <?= ($currentPage === 'admin') ? 'active' : '' ?>" href="../pages/admin.php">Admin</a>
+              </li>
+              <?php endif;?>
           </ul>
 
           <a href="../pages/logout.php">

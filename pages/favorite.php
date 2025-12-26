@@ -1,4 +1,6 @@
-<?php require __DIR__ . "/../includes/header.php"; ?>
+<?php 
+$currentPage = 'favorite';
+require __DIR__ . "/../includes/header.php"; ?>
   <div class="container">
     <h1 class="favoriten">meine Favoriten</h1>
     <ul class="fav-list">

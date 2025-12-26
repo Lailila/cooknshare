@@ -1,4 +1,6 @@
-<?php require __DIR__ . "/../includes/header.php"; ?>
+<?php 
+$currentPage = 'admin';
+require __DIR__ . "/../includes/header.php"; ?>
   <div class="container-fluid p-5">
     <h3 class="text-center mb-3">User</h3>
     <table class="table table-hover mb-5">

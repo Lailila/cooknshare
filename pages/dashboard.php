@@ -1,4 +1,6 @@
-<?php require __DIR__ . "/../includes/header.php"; ?>
+<?php 
+$currentPage = 'dashboard';
+require __DIR__ . "/../includes/header.php"; ?>
 
 <div class="container mt-4">
     <h2 class="mb-4">Willkommen,[username] <?php echo htmlspecialchars($user["username"]); ?> !</h2>
