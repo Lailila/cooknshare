@@ -3,7 +3,7 @@ uploads/*
 !uploads/.gitkeep
 
 # config with database credentials
-config.php
+db.php
 
 # OS files
 .DS_Store
