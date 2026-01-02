@@ -5,7 +5,7 @@ require "../includes/db.php";
 //$userId = $_SESSION['user_id']; //sobald login aktuell ist
 
 //test-user:
-$userId = 7;
+//$userId = 7;
 if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
   $file = $_FILES['profile_image'];
   $errors = [];
@@ -33,7 +33,16 @@ if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
   //ohne Fehler geklappt:
   $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
   $newFileName = 'user_' . $userId . '_' . time() . '.' . $extension;
-  $uploadPath = "../uploads/profile/" . $newFileName;
+  $uploadDir = __DIR__ . "/../uploads/profile/";
+  $uploadPath = $uploadDir . $newFileName;
+
+  if(!is_dir($uploadDir)){
+    mkdir($uploadDir, 0755, true);
+  }
+
+  if(!is_uploaded_file($file['tmp_name'])){
+    die("Keine echte Upload Datei");
+  }
 
   if(!move_uploaded_file($file['tmp_name'], $uploadPath)) {
     $_SESSION['upload_errors'] = ["Die Datei konnte nicht gespeichert werden."];

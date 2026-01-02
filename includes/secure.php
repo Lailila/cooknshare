@@ -2,6 +2,7 @@
 session_start();
 
 //Seiten sind abgesichert vor URL Zugriffen
+$_SESSION['role'] = 'user';
 if(!isset($_SESSION['user'])) {
   header("Location: ../pages/login.php");
   exit;
