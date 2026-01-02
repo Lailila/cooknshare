@@ -1,16 +1,10 @@
-<<<<<<< HEAD
 <?php 
-  $title = 'Mein Profil';
-  include "../includes/header.php";
-?>
-
-<?php
-=======
-<?php
 require "../includes/secure.php"; 
-$currentPage = 'profil';
 require "../includes/db.php";
->>>>>>> 246e07cf3e89f6ba7984c436d97b4df0f349833f
+$title = 'Mein Profil';
+$currentPage = 'profil';
+include "../includes/header.php";
+
 //$userId = $_SESSION['user_id']; //sobald login aktuell ist
 
 //test-user:
@@ -92,9 +86,8 @@ $statementRecipe = $conn->prepare("SELECT COUNT(*) FROM recipes WHERE user_id = 
 $statementRecipe->bind_param("i", $userId);
 $statementRecipe->execute();
 $statementRecipe->bind_result($recipeCount);
-$statementRecipe->fetch();
+$statementRecipe->fetch(); ?>
 
-require "../includes/header.php"; ?>
   <div class="align-items-center vh-100 justify-content-between d-flex">
   <div class="container-fluid">
     <div class="row">
