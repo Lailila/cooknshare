@@ -1,7 +1,8 @@
-<?php
-require __DIR__ . "/../includes/secure.php"; 
-$currentPage = 'upload';
-require __DIR__ . "/../includes/header.php"; ?>
+<?php 
+  $title = 'Upload';
+  include "../includes/header.php";
+?>
+
   <div class="align-items-center p-5">
     <h2 class="text-center p-5"><em>Erstelle ein neues Rezept für die Community</em></h2>
     <div class="container-fluid">

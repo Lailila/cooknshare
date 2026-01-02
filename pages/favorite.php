@@ -1,8 +1,9 @@
-<?php
-require __DIR__ . "/../includes/secure.php"; 
-$currentPage = 'favorite';
-require __DIR__ . "/../includes/header.php"; ?>
-  <div class="container">
+<?php 
+  $title = 'Meine Favoriten';
+  include "../includes/header.php";
+?>
+
+  <main class="container">
     <h1 class="favoriten">meine Favoriten</h1>
     <ul class="fav-list">
         <li class="item">
@@ -37,5 +38,9 @@ require __DIR__ . "/../includes/header.php"; ?>
             </a>
         </li>
     </ul>
-</div>
-<?php require __DIR__ . "/../includes/footer.php"; ?>
+
+  </main>
+
+  <?php include "../includes/footer.php" ?>
+</body>
+</html>

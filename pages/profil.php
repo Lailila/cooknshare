@@ -1,8 +1,9 @@
-<?php
-require "../includes/secure.php"; 
-$currentPage = 'profil';
-require "../includes/db.php";
+<?php 
+  $title = 'Mein Profil';
+  include "../includes/header.php";
+?>
 
+<?php
 //$userId = $_SESSION['user_id']; //sobald login aktuell ist
 
 //test-user:

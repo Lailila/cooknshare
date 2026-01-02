@@ -1,7 +1,8 @@
-<?php
-require __DIR__ . '/../includes/header.php';
-?>
-<div class="container-fluid text-center">
+<?php $title = 'Cook & Share'?>
+
+<?php include "../includes/header.php" ?>
+  <main>
+    <div class="container-fluid text-center">
       <div class="row text-center align-items-center" style="height: 250px;">
         <h2 class="col">Willkommen auf <span></span><em><strong>Cook & Share</strong></em>!</h2>
       </div>
@@ -29,7 +30,7 @@ require __DIR__ . '/../includes/header.php';
     <div class="container text-center contents">
       <div class="row mb-5">
         <div class="col-12 col-lg-4 card recipe" >
-          <a href="rezept.php">
+          <a href="recipe.php">
             <img src="../img/pizza.jpg" class="card-img-top">
             <div class="card-body">
               <p class="card-text ">Pizza Margherita</p>
@@ -38,7 +39,7 @@ require __DIR__ . '/../includes/header.php';
         </div>
 
         <div class="col-12 col-lg-4 card recipe">
-          <a href="rezept.php">
+          <a href="recipe.php">
             <img src="../img/burger.jpg" class="card-img-top">
             <div class="card-body">
               <p class="card-text ">Pizza Margherita</p>
@@ -47,7 +48,7 @@ require __DIR__ . '/../includes/header.php';
 
         </div>
         <div class="col-12 col-lg-4 card recipe">
-          <a href="rezept.php">
+          <a href="recipe.php">
             <img src="../img/indian.jpg" class="img-fluid">
           <div class="card-body">
             <p class="card-text ">Chicken Curry</p>
@@ -111,19 +112,14 @@ require __DIR__ . '/../includes/header.php';
             <p class="card-text ">Hackfleisch Pide</p>
           </div>
           </a>
-          
+
         </div>
       </div>
-    <!-- <div class="row mb-5">
-      <div class="col card recipe">
-        <img class="img-fluid card-img-top">
-        <div class="card-body">
-          <p></p>
-        </div>
-      </div>
-      <div class="col card recipe"></div>
-      <div class="col card recipe"></div>
-    </div> -->
     </div>
-    
-    <?php require __DIR__ . '/../includes/footer.php'; ?>
+
+  </main>
+
+  <?php include "../includes/footer.php" ?>
+</body>
+
+</html>
