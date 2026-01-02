@@ -1,4 +1,7 @@
-<?php require __DIR__ . "/../includes/header.php"; ?>
+<?php 
+  $title = 'Pizza Margherita';
+  include "../includes/header.php";
+?>
 
     <div class="container contents">
         <div class="recipe-main">

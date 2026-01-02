@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 30, 2025 at 05:36 PM
+-- Generation Time: Jan 01, 2026 at 04:43 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -38,6 +38,18 @@ CREATE TABLE `comments` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `favorites`
+--
+
+CREATE TABLE `favorites` (
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `recipe_id` int(10) UNSIGNED NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `recipes`
 --
 
@@ -48,7 +60,8 @@ CREATE TABLE `recipes` (
   `description` text NOT NULL,
   `image_path` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `ingredients` text NOT NULL
+  `ingredients` text NOT NULL,
+  `category` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -87,6 +100,13 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`, `role`
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
+  ADD KEY `recipe_id` (`recipe_id`);
+
+--
+-- Indexes for table `favorites`
+--
+ALTER TABLE `favorites`
+  ADD PRIMARY KEY (`user_id`,`recipe_id`),
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
@@ -136,6 +156,13 @@ ALTER TABLE `users`
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `favorites`
+--
+ALTER TABLE `favorites`
+  ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `recipes`
