@@ -5,7 +5,6 @@ require_once '../classes/UserLogic.php';
 
 //CheckLogin ist eine Klasse, um es zu prüft, ob man eingeloggt ist. Wenn ja, gibt sie true zurück. Sonst falsch.
 $result = UserLogic::checkLogin();
-
 //wenn man schon eingeloggt ist, wird der Browser auf dashboard.php weitergeleitet.
 if($result) {
   header('Location: ../pages/dashboard.php');

@@ -92,7 +92,6 @@ class UserLogic
   public static function checkLogin()
   {
     $result = false;
-    
     if (isset($_SESSION['login_user']) && $_SESSION['login_user']['id'] > 0) {
       return $result = true;
     }

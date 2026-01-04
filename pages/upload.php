@@ -1,8 +1,18 @@
 <?php
 session_start();
 
-$user_id = $_SESSION['login_user']['id'];
+require_once '../classes/UserLogic.php';
+require_once '../classes/db_access.php';
 require_once "../DB/DBconnect.php";
+
+//prüft, ob man eingeloggt ist. Wenn ja, gibt sie true zurück. Sonst falsch.
+$result = UserLogic::checkLogin();
+if (!$result) {
+  header('Location: ./upload_form.php');
+  return;
+}
+
+$user_id = $_SESSION['login_user']['id'];
 $file = $_FILES['img'];
 $filename = basename($file['name']);
 $tmp_path = $file['tmp_name'];
@@ -84,13 +94,16 @@ if (count($err_msgs) > 0) {
 } else {
   if (is_uploaded_file($tmp_path)) {
     if (move_uploaded_file($tmp_path, $save_path)) {
-      echo $filename . 'wurde auf' . $upload_dir . 'hochgeladen';
+
+      // echo $filename . 'wurde auf' . $upload_dir . 'hochgeladen';
+
       // in DB speichern (filename, filepath, title, category, ingredients, description)
-      $result = fileSave($user_id, $filename, $save_path, $title, $category, $ingredients, $description);
+      $result = db_access::fileSave($user_id, $filename, $save_path, $title, $category, $ingredients, $description);
       if ($result) {
-        echo 'in DB gespeichert';
+        // echo 'in DB gespeichert';
+        header('Location: ./MyRecipe.php');
       } else {
-        echo 'in DB nicht gespeichert!';
+        echo 'Error! Die Datei wurde in DB nicht gespeichert!';
       }
     } else {
       echo 'Die Datei konnte nicht gespeichert werden.';
@@ -100,6 +113,3 @@ if (count($err_msgs) > 0) {
     echo '<br>';
   }
 }
-
-?>
-<a href="./upload_form.php">戻る</a>

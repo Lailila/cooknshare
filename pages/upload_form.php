@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../classes/UserLogic.php';
+require_once '../classes/db_access.php';
 require_once '../security.php';
 
 //prüft, ob man eingeloggt ist. Wenn ja, gibt sie true zurück. Sonst falsch.
@@ -17,7 +18,8 @@ $old = $_SESSION['old'] ?? [];
 unset($_SESSION['old']);
 
 require_once '../DB/DBconnect.php';
-$files = getAllFile();
+$files = db_access::getAllFile();
+
 
 $title = 'Upload';
 include "../includes/header.php";
@@ -94,13 +96,6 @@ include "../includes/header.php";
       </div>
 
     </form>
-
-    <div>
-      <?php foreach ($files as $file): ?>
-        <img src="<?php echo "{$file['file_path']}"; ?>" alt="">
-        <p><?php echo h("{$file['description']}"); ?></p>
-      <?php endforeach; ?>
-    </div>
 
   </div>
 </div>
