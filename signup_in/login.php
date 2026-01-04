@@ -14,14 +14,13 @@ if($result) {
 
 
 //Funktion, wenn ein Formular mit leerem Benutzernamen oder Passwort oder beidem abgeschickt wird
-
 $err = [];
 
 //wenn der abgeschickten Benutzernamen leer ist
 if(!$username = filter_input(INPUT_POST, 'username')) {
   $err['username'] = 'Bitte geben Sie Ihren Benutzernamen ein';
 }
-////wenn das abgeschickte Passwort leer ist
+//wenn das abgeschickte Passwort leer ist
 if(!$password = filter_input(INPUT_POST, 'password')) {
   $err['password'] = 'Bitte geben Sie Ihr Passwort ein';
 }
