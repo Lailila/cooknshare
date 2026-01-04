@@ -4,6 +4,7 @@ uploads/*
 
 # config with database credentials
 db.php
+**/env.php
 
 # OS files
 .DS_Store
