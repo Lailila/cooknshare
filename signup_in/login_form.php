@@ -60,8 +60,6 @@ session_destroy();
             <p class="text-danger"><?php echo $err['msg']; ?></p>
           <?php endif; ?>
 
-            
-
             <div class="d-grid gap-2">
               <input type="submit" value="Login">
             </div>

@@ -36,7 +36,7 @@ $is_login = UserLogic::checkLogin();
               <a class="nav-link" href="../pages/favorite.php">Favoriten</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../pages/upload.php">Upload</a>
+              <a class="nav-link" href="../pages/upload_form.php">Upload</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="../pages/profil.php">Profil</a>

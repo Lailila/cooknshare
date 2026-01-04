@@ -9,3 +9,5 @@ db.php
 # OS files
 .DS_Store
 Thumbs.db
+
+DB/env.php
