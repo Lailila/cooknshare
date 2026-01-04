@@ -2,9 +2,14 @@
 session_start();
 
 //Seiten sind abgesichert vor URL Zugriffen
-$_SESSION['role'] = 'user';
-if(!isset($_SESSION['user'])) {
-  header("Location: ../pages/login.php");
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+require_once "../classes/UserLogic.php";
+
+if (!UserLogic::checkLogin()) {
+  header('Location: ../signup_in/login_form.php');
   exit;
 }
 

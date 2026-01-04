@@ -1,14 +1,17 @@
-<?php 
-require "../includes/secure.php"; 
-require "../includes/db.php";
+<?php  
+require "../includes/secure.php";
+require_once "../DB/DBconnect.php";
 $title = 'Mein Profil';
 $currentPage = 'profil';
+$user = $_SESSION['login_user'];
+$userId = $user['id'];
+
 include "../includes/header.php";
 
-//$userId = $_SESSION['user_id']; //sobald login aktuell ist
 
-//test-user:
-//$userId = 7;
+
+
+
 if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
   $file = $_FILES['profile_image'];
   $errors = [];
@@ -53,40 +56,23 @@ if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
     exit;
   }
 
-  $statementPicture = $conn->prepare("UPDATE users SET image_path = ? WHERE id = ?");
-  $statementPicture->bind_param("si", $newFileName, $userId);
-  $statementPicture->execute();
-  $statementPicture->close();
+  $stmt = connect()->prepare(
+    "UPDATE users SET image_path = ? WHERE id = ?"
+  );
+  $stmt->execute([$newFileName, $userId]);
+  $_SESSION['login_user']['image_path'] = $newFileName;
 
   $_SESSION['upload_success'] = "Profilbild erfolgreich aktualisiert.";
   header("Location: profil.php");
   exit;
-
-
 }
-
-$statement = $conn->prepare("
-SELECT username, email, created_at, image_path FROM users WHERE id = ?
-");
-$statement->bind_param("i", $userId);
-$statement->execute();
-$statement->bind_result($username, $email, $created_at, $image_path);
-$statement->fetch();
-$statement->close();
-$user = [
-  'username' => $username,
-  'email' => $email,
-  'created_at' => $created_at,
-  'image_path' => $image_path,
-];
 
 //Rezepte zählen, die User hochgeladen hat
 $recipeCount = 0;
-$statementRecipe = $conn->prepare("SELECT COUNT(*) FROM recipes WHERE user_id = ?");
-$statementRecipe->bind_param("i", $userId);
-$statementRecipe->execute();
-$statementRecipe->bind_result($recipeCount);
-$statementRecipe->fetch(); ?>
+$stmt = connect()->prepare("SELECT COUNT(*) FROM recipes WHERE user_id = ?");
+$stmt->execute([$userId]);
+$recipeCount = $stmt->fetchColumn();
+?>
 
   <div class="align-items-center vh-100 justify-content-between d-flex">
   <div class="container-fluid">
