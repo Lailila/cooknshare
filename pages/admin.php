@@ -1,5 +1,4 @@
 <?php 
-echo __DIR__;
 /*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);*/
@@ -9,6 +8,9 @@ require_once __DIR__ . "/../DB/DBconnect.php";
 $users = connect()->query("SELECT id, username, email, created_at, role FROM users ORDER BY created_at DESC")->fetchAll();
 $recipes = connect()->query("
   SELECT r.id, r.title, r.created_at, u.username FROM recipes r JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC
+")->fetchAll();
+$comments = connect()->query("
+  SELECT c.id, c.comment, c.created_at, u.username, r.title FROM comments c JOIN recipes r ON c.recipe_id = r.id JOIN users u ON c.user_id = u.id ORDER BY c.created_at DESC 
 ")->fetchAll();
 
 $currentPage = 'admin';
@@ -75,31 +77,27 @@ require __DIR__ . "/../includes/header.php"; ?>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Kommentar</th>
+        <th scope="col">Rezept</th>
         <th scope="col">User</th>
         <th scope="col">erstellt am</th>
         <th scope="col">löschen</th>
       </tr>
+      <?php foreach($comments as $comment): ?>
       <tr>
-        <th scope="row">1</th>
-        <td>"Super lecker! Werde ich auf jeden Fall wieder machen."</td>
-        <td>Max</td>
-        <td>03.02.2024</td>
-        <td><button class="btn btn-primary">✓</button></td>
+        <th scope="row"><?= (int)$comment['id'] ?></th>
+        <td><?= htmlspecialchars($comment['comment']) ?></td>
+        <td><?= htmlspecialchars($comment['title']) ?></td>
+        <td><?= htmlspecialchars($comment['username']) ?></td>
+        <td><?= date('d.m.Y', strtotime($comment['created_at'])) ?></td>
+        <td>
+          <form action="delete_comment.php" method="POST" onsubmit="return confirm('Kommentar wirklich löschen?');">
+            <input type="hidden" name="comment_id" value="<?= (int)$comment['id'] ?>">
+            <button type="submit" class="btn btn-danger btn-sm">✓</button>
+          </form>
+          
+        </td>
       </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>"Leider etwas trocken. Ich würde lieber noch etwas Milch hinzugeben."</td>
-        <td>Lisa</td>
-        <td>12.10.2025</td>
-        <td><button class="btn btn-primary">✓</button></td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>"Hat der ganzen Familie geschmeckt, vielen Dank!"</td>
-        <td>Andrea</td>
-        <td>24.08.2025</td>
-        <td><button class="btn btn-primary">✓</button></td>
-      </tr>
+      <?php endforeach; ?>
     </table>
   </div>
 <?php require __DIR__ . "/../includes/footer.php"; ?>

@@ -3,6 +3,7 @@ $requiredRole = "admin";
 require __DIR__ . "/../includes/secure.php";
 require_once __DIR__ . "/../DB/DBconnect.php";
 
+//filtert nur ungültige Werte -> falsch
 $recipeId = filter_input(INPUT_POST, 'recipe_id', FILTER_VALIDATE_INT);
 
 if(!$recipeId){

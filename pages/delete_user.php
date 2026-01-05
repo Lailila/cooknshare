@@ -1,9 +1,12 @@
 <?php 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 $requiredRole = "admin";
 require __DIR__ . "/../includes/secure.php";
 require_once __DIR__ . "/../DB/DBconnect.php";
 
-//Eingabe filtern, ungültige IDs ergeben falsch
+//filtert nur ungültige Werte -> falsch
 $userId = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
 
 if(!$userId){ //ungültige userId
@@ -24,10 +27,6 @@ $imagePath = $stmt->fetchColumn();
 //Profilbild löschen
 if(!empty($imagePath)){
   $serverPath = $_SERVER['DOCUMENT_ROOT'] . "/cooknshare/uploads/profile/" . $imagePath;
-  var_dump($_SERVER['DOCUMENT_ROOT']);
-var_dump($imagePath);
-var_dump($serverPath);
-exit;
   if(file_exists($serverPath)){
     unlink($serverPath);
   }
