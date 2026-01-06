@@ -55,18 +55,21 @@ a {
 .fav-list{
   padding: 0;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px 2.75%;
 }
 
 .fav-list .item {
   width: 31.5%;
   box-shadow: 0 3px 21px rgba(0, 0, 0, 0.16);
+  border: 2px solid rgb(96 139 168);
+  border-radius: 5px;
 }
 
 .fav-list .item img {
   width: 100%;
-    /* height: 250px; */
-    object-fit: cover;
+  height: 250px;
+  object-fit: cover;
 }
 
 .item-detail {
@@ -81,6 +84,20 @@ a {
   font-weight: bold;
   /* margin-bottom: 8px; */
 }
+
+.ellipsis-1 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ellipsis-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 
 footer {
   margin-top: 40px;
