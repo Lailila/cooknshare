@@ -44,6 +44,11 @@ $is_login = UserLogic::checkLogin();
             <li class="nav-item">
               <a class="nav-link" href="../pages/MyRecipe.php">Meine Rezepte</a>
             </li>
+            <?php if(($_SESSION['login_user']['role'] ?? '') === 'admin'): ?>
+            <li class="nav-item">
+              <a class="nav-link" href="../pages/admin.php">Admin</a>
+            </li>
+            <?php endif; ?>
           </ul>
             <form action= "../signup_in/logout.php" method="POST">
                 <input class="btn btn-secondary" type="submit" name="logout" value="logout">

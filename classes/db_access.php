@@ -13,21 +13,20 @@ class db_access
    * @param string $ingredients
    * @param string $description
    */
-  public static function fileSave($user_id, $filename, $save_path, $title, $category, $ingredients, $description)
+  public static function fileSave($user_id, $save_path, $title, $category, $ingredients, $description)
   {
     $result = False;
 
-    $sql = "INSERT INTO recipes (user_id, file_name, image_path, title, category, ingredients, description) VALUE (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO recipes (user_id, image_path, title, category, ingredients, description) VALUE (?, ?, ?, ?, ?, ?)";
 
     try {
       $stmt = connect()->prepare($sql);
       $stmt->bindValue(1, $user_id, PDO::PARAM_INT);
-      $stmt->bindValue(2, $filename);
-      $stmt->bindValue(3, $save_path);
-      $stmt->bindValue(4, $title);
-      $stmt->bindValue(5, $category);
-      $stmt->bindValue(6, $ingredients);
-      $stmt->bindValue(7, $description);
+      $stmt->bindValue(2, $save_path);
+      $stmt->bindValue(3, $title);
+      $stmt->bindValue(4, $category);
+      $stmt->bindValue(5, $ingredients);
+      $stmt->bindValue(6, $description);
       $result = $stmt->execute();
       return $result;
     } catch (\Exception $e) {
@@ -38,6 +37,7 @@ class db_access
 
   /**
    * Dateidaten abrufen
+   * wir könnten das vl auf mainpage.php auch verwenden????
    * @return array $fileData
    */
   public static function getAllFile()
@@ -55,20 +55,17 @@ class db_access
    * @param string $user_id
    * @return array|bool $recipe|false
    */
-  public static function getRecipeByUserId($user_id)
-  {
-    $sql = 'SELECT * FROM recipes WHERE $user_id = ?';
-
-    $arr = [];
-    $arr[] = $user_id;
+  public static function getRecipesByUserId($user_id)
+{
+    $sql = 'SELECT * FROM recipes WHERE user_id = ? ORDER BY created_at DESC';
 
     try {
-      $stmt = connect()->prepare($sql);
-      $stmt->execute($arr);
-      $recipe = $stmt->fetch();
-      return $recipe;
-    } catch(\Exception $e) {
-      return false;
+        $stmt = connect()->prepare($sql);
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (\Exception $e) {
+        return false;
     }
-  }
+}
+
 }
