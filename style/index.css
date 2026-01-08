@@ -12,11 +12,6 @@ a {
   height: 50px;
 }
 
-.recipe:hover {
-  box-shadow: 0px 20px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  cursor: pointer;
-}
-
 :root{
   --bs-primary: #FFA548;
 }
@@ -125,3 +120,29 @@ footer {
     height: 220px;
   }
 }
+.card-img-top {
+  height: 220px;
+  object-fit: cover;
+}
+.recipe-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recipe-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+.recipe-card a {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+}
+
+.recipe-card img {
+  transition: transform 0.3s ease;
+}
+
+.recipe-card:hover img {
+  transform: scale(1.1);
+}
+

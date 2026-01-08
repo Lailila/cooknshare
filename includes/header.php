@@ -15,7 +15,8 @@ $is_login = UserLogic::checkLogin();
   <title><?php echo $title?></title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <link rel="stylesheet" href="../style/index.css">
+<!-- php time() funktion, damit css nicht aus dem cache geladen wird, zum debuggen -->
+  <link rel="stylesheet" href="../style/index.css?v=<?= time() ?>">
 </head>
 
 <body>
@@ -44,7 +45,7 @@ $is_login = UserLogic::checkLogin();
             <li class="nav-item">
               <a class="nav-link" href="../pages/MyRecipe.php">Meine Rezepte</a>
             </li>
-            <?php if(($_SESSION['login_user']['role'] ?? '') === 'admin'): ?>
+            <?php if(($_SESSION['login_user']['role'] ?? '') === 'admin'): //wenn user die Rolle admin hat wird navbar Punkt sichtbar?>
             <li class="nav-item">
               <a class="nav-link" href="../pages/admin.php">Admin</a>
             </li>
@@ -65,3 +66,4 @@ $is_login = UserLogic::checkLogin();
         </div>
     </nav>
   </header>
+  <main>

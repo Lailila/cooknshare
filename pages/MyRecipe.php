@@ -44,4 +44,4 @@ include "../includes/header.php";
   <?php endif; ?>
 
 </div>
-<?php require __DIR__ . "/../includes/footer.php"; ?>
+<?php include "../includes/footer.php"; ?>

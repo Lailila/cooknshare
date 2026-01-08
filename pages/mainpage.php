@@ -1,7 +1,34 @@
-<?php $title = 'Cook & Share'?>
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-<?php include "../includes/header.php" ?>
-  <main>
+$title = 'Cook & Share';
+require_once "../DB/DBconnect.php";
+include "../includes/header.php";
+$category = $_GET['category'] ?? null;
+$search = $_GET['search'] ?? null;
+$sql = (
+  "SELECT r.id, r.title, r.user_id, r.image_path, r.ingredients, r.category, u.username 
+  FROM recipes r 
+  JOIN users u ON r.user_id = u.id");
+$params = [];
+$conditions = [];
+if(!empty($category)){
+  $conditions[] .= "r.category = ?";//Platzhalter für category
+  $params[] = $category;//Parameter 1
+}
+if(!empty($search)){
+  $conditions[] = "r.title LIKE ?";//Plathalter für Suchbegriff
+  $params[] = "%" . $search . "%";//Parameter 2
+}
+if(!empty($conditions)){
+  $sql .= " WHERE " . implode(" AND ", $conditions);//macht conditions array zu string
+}
+$sql .= " ORDER BY r.created_at DESC";
+$stmt = connect()->prepare($sql);
+$stmt->execute($params);
+$recipes = $stmt->fetchAll();
+?>
     <div class="container-fluid text-center">
       <div class="row text-center align-items-center" style="height: 250px;">
         <h2 class="col">Willkommen auf <span></span><em><strong>Cook & Share</strong></em>!</h2>
@@ -9,117 +36,24 @@
     </div>
     <div class="container mb-3">
       <div class="dropdown col">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
           Kategorie
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Vorspeise</a></li>
-          <li><a class="dropdown-item" href="#">Hauptspeise</a></li>
-          <li><a class="dropdown-item" href="#">Nachspeise</a></li>
+          <li><a class="dropdown-item" href="mainpage.php">Alle</a></li>
+          <li><a class="dropdown-item" href="mainpage.php?category=appetizer">Vorspeise</a></li>
+          <li><a class="dropdown-item" href="mainpage.php?category=maindish">Hauptspeise</a></li>
+          <li><a class="dropdown-item" href="mainpage.php?category=dessert">Nachspeise</a></li>
         </ul>
       </div>
-
-      <form class="d-flex me-3" role="search">
-        <input class="form-control" type="search" placeholder="Pizza..." aria-label="Search">
-        <button class="btn btn-secondary">search</button>
+      <form class="d-flex me-3" method="GET" action="mainpage.php" role="search">
+      <!-- Wenn Kategorie schon gesetzt ist, soll sie auch beim Suchen beibehalten werden, wird mitgeschickt -->
+      <?php if (!empty($category)): ?>
+        <input type="hidden" name="category" value="<?= htmlspecialchars($category) ?>">
+      <?php endif; ?>
+      <input class="form-control me-2" type="search" name="search" placeholder="Pizza..." aria-label="Search">
+        <button class="btn btn-secondary" type="submit">Search</button>
       </form>
-
     </div>
-
-
-    <div class="container text-center contents">
-      <div class="row mb-5">
-        <div class="col-12 col-lg-4 card recipe" >
-          <a href="recipe.php">
-            <img src="../img/pizza.jpg" class="card-img-top">
-            <div class="card-body">
-              <p class="card-text ">Pizza Margherita</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-12 col-lg-4 card recipe">
-          <a href="recipe.php">
-            <img src="../img/burger.jpg" class="card-img-top">
-            <div class="card-body">
-              <p class="card-text ">Pizza Margherita</p>
-            </div>
-          </a>
-
-        </div>
-        <div class="col-12 col-lg-4 card recipe">
-          <a href="recipe.php">
-            <img src="../img/indian.jpg" class="img-fluid">
-          <div class="card-body">
-            <p class="card-text ">Chicken Curry</p>
-          </div>
-          </a>
-          
-        </div>
-      </div>
-      <div class="row mb-5">
-        <div class="col-12 col-lg-4 card recipe">
-          <a href="rezept.php">
-            <img src="../img/lahmacun.jpg" class="img-fluid">
-            <div class="card-body">
-              <p class="card-text ">Lahmacun</p>
-            </div>
-          </a>
-          
-        </div>
-        <div class="col-12 col-lg-4 card recipe">
-          <a href="rezept.php">
-            <img src="../img/paella.jpg" class="img-fluid">
-            <div class="card-body">
-              <p class="card-text ">Paella</p>
-            </div>
-          </a>
-          
-        </div>
-        <div class="col-12 col-lg-4 card recipe">
-          <a href="rezept.php">
-            <img src="../img/torte.jpg" class="img-fluid">
-            <div class="card-body">
-              <p class="card-text ">Sahne-Kirsch-Torte</p>
-            </div>
-          </a>
-          
-        </div>
-      </div>
-      <div class="row mb-5">
-        <div class="col-12 col-lg-4 card recipe">
-          <a href="rezept.php">
-            <img src="../img/ramen.jpg" class="img-fluid">
-          <div class="card-body">
-            <p class="card-text ">Ramen</p>
-          </div>
-          </a>
-          
-        </div>
-        <div class="col-12 col-lg-4 card recipe">
-          <a href="rezept.php">
-            <img src="../img/sushi.jpg" class="img-fluid">
-          <div class="card-body">
-            <p class="card-text ">Sushi Platte</p>
-          </div>
-          </a>
-          
-        </div>
-        <div class="col-12 col-lg-4 card recipe">
-          <a href="rezept.php">
-            <img src="../img/pide.jpg" class="img-fluid">
-          <div class="card-body">
-            <p class="card-text ">Hackfleisch Pide</p>
-          </div>
-          </a>
-
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <?php include "../includes/footer.php" ?>
-</body>
-
-</html>
+<?php include "../includes/recipe-card.php" ?>
+<?php include "../includes/footer.php" ?>

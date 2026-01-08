@@ -12,7 +12,7 @@ if (!UserLogic::checkLogin()) {
   exit;
 }
 
-//Admin-Rolle muss gegeben sein
+//wenn auf Admin-Seite zugegriffen wird
 if (isset($requiredRole)) {
   //wenn Rolle in Session vorhanden
   $role = $_SESSION['login_user']['role'] ?? null;

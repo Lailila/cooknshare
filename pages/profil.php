@@ -8,10 +8,6 @@ $userId = $user['id'];
 
 include "../includes/header.php";
 
-
-
-
-
 if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
   $file = $_FILES['profile_image'];
   $errors = [];
