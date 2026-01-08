@@ -3,6 +3,10 @@ $requiredRole = "admin";
 require __DIR__ . "/../includes/secure.php";
 require_once __DIR__ . "/../DB/DBconnect.php";
 
+if($_SERVER['REQUEST_METHOD'] !== 'POST'){
+  header("Location: admin.php");
+  exit;
+}
 //filtert nur ungültige Werte -> falsch
 $recipeId = filter_input(INPUT_POST, 'recipe_id', FILTER_VALIDATE_INT);
 

@@ -160,3 +160,10 @@ footer {
   border-bottom: none;
 }
 
+.profile-image {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 1.5rem;
+}
