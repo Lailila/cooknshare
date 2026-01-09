@@ -1,46 +1,31 @@
-<?php 
-  $title = 'Meine Favoriten';
-  include "../includes/header.php";
+<?php
+session_start();
+require_once '../classes/UserLogic.php';
+require_once '../classes/db_access.php';
+
+require_once '../security.php';
+require_once "../DB/DBconnect.php";
+$displayUsername = $_SESSION['login_user']['username'];
+
+//prüft, ob man eingeloggt ist. Wenn ja, gibt true zurück. Sonst falsch.
+$result = UserLogic::checkLogin();
+if (!$result) {
+  header('Location: ../signup_in/login_form.php');
+  return;
+}
+
+
+$user_id = $_SESSION['login_user']['id'];
+$recipes = db_access::getFavsByUserId($user_id);
+
+
+
+$title = 'Meine Favoriten';
+include "../includes/header.php";
+include "../includes/recipe-card.php";
 ?>
+<script src="../js/favorite.js"></script>
 
-  <main class="container">
-    <h1 class="favoriten">meine Favoriten</h1>
-    <ul class="fav-list">
-        <li class="item">
-            <a href="rezept.php">
-              <img
-              src="../img/pizza.jpg" />
-              <div class="item-detail">
-                <p class="item-title">Spaghetti mit Tomaten-Basilikum</p>
-                <p class="zutaten">Spaghetti, Tomaten, Basilikum, Olivenöl, Salz, Pfeffer</p>
-                <p class="user">von Anna</p>
-              </div>
-            </a>
-        </li>
-        <li class="item">
-            <a href="rezept.php">
-              <img src="../img/pizza.jpg" />
-              <div class="item-detail">
-                <p class="item-title">Spaghetti mit Tomaten-Basilikum</p>
-                <p class="zutaten">Spaghetti, Tomaten, Basilikum, Olivenöl, Salz, Pfeffer</p>
-                <p class="user">von Anna</p>
-              </div>
-            </a>
-        </li>
-        <li class="item">
-            <a href="rezept.php">
-              <img src="../img/pizza.jpg" />
-              <div class="item-detail">
-                <p class="item-title">Spaghetti mit Tomaten-Basilikum</p>
-                <p class="zutaten">Spaghetti, Tomaten, Basilikum, Olivenöl, Salz, Pfeffer</p>
-                <p class="user">von Anna</p>
-              </div>
-            </a>
-        </li>
-    </ul>
+<?php include "../includes/footer.php"?>
 
-  </main>
 
-  <?php include "../includes/footer.php" ?>
-</body>
-</html>

@@ -7,32 +7,32 @@ li {
 }
 
 a {
-    text-decoration: none;
-    transition: 0.3s;
-    color: #24292e;
+  text-decoration: none;
+  transition: 0.3s;
+  color: #24292e;
 }
 
 .index-logo {
   height: 50px;
 }
 
-:root{
-  --bs-primary: #FFA548;
+:root {
+  --bs-primary: #ffa548;
 }
 
-.login-card{
+.login-card {
   max-width: min(90%, 640px);
   margin: 2rem auto;
 }
 
 .btn-primary {
-  background-color: #FFA548;
-  border-color: #FFA548;
+  background-color: #ffa548;
+  border-color: #ffa548;
 }
 
 .btn-primary:hover {
-  background-color: #FFA548;
-  border-color: #FFA548;
+  background-color: #ffa548;
+  border-color: #ffa548;
 }
 
 .contents {
@@ -40,7 +40,7 @@ a {
 }
 
 /*rezept.html*/
-.recipe-detail img{
+.recipe-detail img {
   width: 100%;
   height: auto;
   max-height: 550px;
@@ -48,11 +48,11 @@ a {
 }
 
 /* favorite.html*/
-.favoriten{
+.favoriten {
   padding: 30px 0;
 }
 
-.fav-list{
+.fav-list {
   padding: 0;
   display: flex;
   flex-wrap: wrap;
@@ -98,7 +98,89 @@ a {
   overflow: hidden;
 }
 
+/* favorite.php */
+.like-button {
+  cursor: pointer;
+  display: inline-block;
+}
 
+.like-button input {
+  display: none;
+}
+
+.heart {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  background-color: #ccc;
+  transform: rotate(-45deg);
+  display: inline-block;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -12px;
+  left: 0;
+}
+
+.heart::after {
+  left: 12px;
+  top: 0;
+}
+
+.like-button input:checked + .heart,
+.like-button input:checked + .heart::before,
+.like-button input:checked + .heart::after {
+  background-color: #ed4956; /* Instagramっぽい赤 */
+}
+
+/* MyRecipe.php */
+.edit-button {
+  margin-right: 5px;
+}
+
+/* dashboard.php */
+.dashboard .flex {
+  display: flex;
+  justify-content: space-between;
+}
+.dashboard .left {
+  width: 46%;
+}
+.dashboard .right {
+  width: 46%;
+  display: flex;
+  flex-direction: column; /* 縦方向 */
+  justify-content: space-between;
+}
+
+.dashboard .profi-img {
+  object-fit: cover;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.dashboard .button{
+  padding: 5% 20%;
+}
+
+.dashboard .btn{
+  width: 100%;
+  color: #fff;
+  background-color: #ffa548;
+}
+
+
+/* footer */
 footer {
   margin-top: 40px;
   background-color: #fff;
@@ -111,7 +193,7 @@ footer {
   .fav-list {
     flex-direction: column;
   }
-  .fav-list .item{
+  .fav-list .item {
     width: 100%;
     margin-bottom: 30px;
   }
@@ -159,4 +241,3 @@ footer {
 .comment:last-child {
   border-bottom: none;
 }
-

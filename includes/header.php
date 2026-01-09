@@ -61,7 +61,7 @@ $is_login = UserLogic::checkLogin();
               <a class="nav-link" href="../signup_in/login_form.php">
                 <button class="btn btn-secondary">Anmelden</button>
               </a>
-             
+
           <?php endif; ?>
         </div>
     </nav>
