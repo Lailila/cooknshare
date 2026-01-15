@@ -35,37 +35,153 @@ class db_access
     }
   }
 
-  /**
-   * Dateidaten abrufen
-   * wir könnten das vl auf mainpage.php auch verwenden????
-   * @return array $fileData
-   */
-  public static function getAllFile()
-  {
-    $sql = "SELECT * FROM recipes";
-
-    $fileData = connect()->query($sql);
-
-    return $fileData;
-  }
-
 
   /**
-   * Überprüfen, ob die user_id des aktuell eingelogten Kontos in der Datenbank vorhanden ist.
+   * Rezeptdaten anhand der Benutzer-ID des angemeldeten Benutzers abrufen
    * @param string $user_id
    * @return array|bool $recipe|false
    */
   public static function getRecipesByUserId($user_id)
-{
+  {
     $sql = 'SELECT * FROM recipes WHERE user_id = ? ORDER BY created_at DESC';
 
     try {
-        $stmt = connect()->prepare($sql);
-        $stmt->execute([$user_id]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $stmt = connect()->prepare($sql);
+      $stmt->execute([$user_id]);
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (\Exception $e) {
-        return false;
+      return false;
     }
-}
+  }
 
+
+
+
+  public static function getLatestRecipeImagePathByUserId($user_id)
+  {
+    $sql = '
+    SELECT image_path
+    FROM recipes
+    WHERE user_id = ?
+    ORDER BY created_at DESC
+    LIMIT 1
+  ';
+
+    try {
+      $stmt = connect()->prepare($sql);
+      $stmt->execute([$user_id]);
+      return $stmt->fetchColumn();
+    } catch (\Exception $e) {
+      return false;
+    }
+  }
+
+
+
+  /**
+   * Favoriten anhand der Benutzer-ID des angemeldeten Benutzers abrufen
+   * @param string $user_id
+   * @return array|bool $recipe|false
+   */
+  public static function getFavsByUserId($user_id)
+  {
+    $sql = "
+    SELECT r.*
+    FROM favorites f
+    JOIN recipes r ON f.recipe_id = r.id
+    WHERE f.user_id = ?
+  ";
+
+    try {
+      $stmt = connect()->prepare($sql);
+      $stmt->execute([$user_id]);
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (\Exception $e) {
+      return false;
+    }
+  }
+
+  public static function getLatestFavImagePathByUserId($user_id)
+  {
+    $sql = '
+    SELECT r.image_path
+    FROM favorites f
+    JOIN recipes r ON f.recipe_id = r.id
+    where user_id = ?
+    ORDER BY f.created_at DESC
+    LIMIT 1
+  ';
+
+
+    try {
+      $stmt = connect()->prepare($sql);
+      $stmt->execute([$user_id]);
+      return $stmt->fetchColumn(); 
+    } catch (\Exception $e) {
+      return false;
+    }
+  }
+
+
+
+  /**
+   * 
+   * 
+   */
+  public static function updateRecipe(
+    int $recipe_id,
+    int $user_id,
+    string $title,
+    string $category,
+    string $ingredients,
+    string $description,
+    ?string $image_path = null
+  ) {
+    $pdo = connect();
+
+    if ($image_path !== null) {
+      $sql = "
+            UPDATE recipes
+            SET
+                title = :title,
+                category = :category,
+                ingredients = :ingredients,
+                description = :description,
+                image_path = :image_path
+            WHERE id = :id
+              AND user_id = :user_id
+        ";
+    } else {
+      $sql = "
+            UPDATE recipes
+            SET
+                title = :title,
+                category = :category,
+                ingredients = :ingredients,
+                description = :description
+            WHERE id = :id
+              AND user_id = :user_id
+        ";
+    }
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':title', $title, PDO::PARAM_STR);
+    $stmt->bindValue(':category', $category, PDO::PARAM_STR);
+    $stmt->bindValue(':ingredients', $ingredients, PDO::PARAM_STR);
+    $stmt->bindValue(':description', $description, PDO::PARAM_STR);
+    $stmt->bindValue(':id', $recipe_id, PDO::PARAM_INT);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+    if ($image_path !== null) {
+      $stmt->bindValue(':image_path', $image_path, PDO::PARAM_STR);
+    }
+
+    return $stmt->execute();
+  }
+
+
+  /**
+   * eine Rezept löschen
+   */
 }

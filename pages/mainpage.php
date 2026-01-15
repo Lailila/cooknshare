@@ -57,3 +57,4 @@ $recipes = $stmt->fetchAll();
     </div>
 <?php include "../includes/recipe-card.php" ?>
 <?php include "../includes/footer.php" ?>
+<script src="../js/favorite.js"></script>
