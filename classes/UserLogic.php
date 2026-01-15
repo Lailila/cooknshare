@@ -10,27 +10,43 @@ class UserLogic
    * @return bool $result
    */
   public static function createUser($userData)
-  {
-    $result = false;
+{
+  $sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
 
-    $sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
+  $arr = [
+    $userData['username'],
+    $userData['email'],
+    password_hash($userData['password'], PASSWORD_DEFAULT)
+  ];
 
+  try {
+    $stmt = connect()->prepare($sql);
+    $stmt->execute($arr);
+    return true;
 
-    $arr = [];
-    $arr[] = $userData['username'];
-    $arr[] = $userData['email'];
-    $arr[] = password_hash($userData['password'], PASSWORD_DEFAULT);
+  } catch (PDOException $e) {
 
-    try {
-      $stmt = connect()->prepare($sql);
-      $result = $stmt->execute($arr);
-      return $result;
-    } catch(\Exception $e) {
-      echo $e; 
-      error_log($e, 3, '../error.log'); 
-      return $result;
+    // UNIQUE constraint verletzt
+    if ($e->getCode() === '23000') {
+
+      // welcher UNIQUE index?
+      if (str_contains($e->getMessage(), 'username')) {
+        $_SESSION['err']['username'] = 'Dieser Benutzername ist bereits vergeben.';
+      }
+
+      if (str_contains($e->getMessage(), 'email')) {
+        $_SESSION['err']['email'] = 'Diese E-Mail-Adresse ist bereits vergeben.';
+      }
+
+      return false;
     }
+
+    // andere DB-Fehler loggen
+    error_log($e->getMessage(), 3, '../error.log');
+    return false;
   }
+}
+
 
   /**
    * Login-Funktion

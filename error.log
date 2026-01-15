@@ -1,0 +1,5 @@
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'Sarah' for key 'username' in /Applications/XAMPP/xamppfiles/htdocs/cooknshare/classes/UserLogic.php:26
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/cooknshare/classes/UserLogic.php(26): PDOStatement->execute(Array)
+#1 /Applications/XAMPP/xamppfiles/htdocs/cooknshare/signup_in/register.php(50): UserLogic::createUser(Array)
+#2 {main}

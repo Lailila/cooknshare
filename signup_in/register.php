@@ -49,9 +49,11 @@ if (count($err) === 0) {
   // eine Funktion, um einen Account zu erstellen
   $hasCreated = UserLogic::createUser($_POST);
 
-  if(!$hasCreated) {
-    $err[] = 'Registrierung fehlgeschlagen';
+  if (!$hasCreated) {
+    header('Location: signup_form.php');
+    exit;
   }
+  
 }
 
 ?>
