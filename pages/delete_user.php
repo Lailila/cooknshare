@@ -25,8 +25,8 @@ $stmt = $conn->prepare("SELECT image_path FROM users WHERE id = ?");
 $stmt->execute([$userId]);
 $imagePath = $stmt->fetchColumn();
 //Profilbild löschen
-if(!empty($imagePath)){
-  $serverPath = $_SERVER['DOCUMENT_ROOT'] . "/cooknshare/uploads/profile/" . $imagePath;
+if(!empty($imagePath) && $imagePath !== '/cooknshare/img/profile-default.svg'){
+  $serverPath = $_SERVER['DOCUMENT_ROOT'] . $imagePath;
   if(file_exists($serverPath)){
     unlink($serverPath);
   }

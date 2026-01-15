@@ -5,9 +5,9 @@ $title = 'Mein Profil';
 $currentPage = 'profil';
 $user = $_SESSION['login_user'];
 $userId = $user['id'];
-
 include "../includes/header.php";
 
+//Profilbild hochladen
 if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
   $file = $_FILES['profile_image'];
   $errors = [];
@@ -19,6 +19,11 @@ if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
   if(!empty($file['tmp_name']) && !getimagesize($file['tmp_name'])){
     $errors[] = "Die Datei ist kein gültiges Bild.";
   }
+
+  $maxFileSize = 5 * 1024 * 1024; // 5 MB
+  if ($file['size'] > $maxFileSize) {
+    $errors[] = "Das Bild darf maximal 2 MB groß sein.";
+}
 
   $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
   if(!in_array($file['type'], $allowedTypes)){
@@ -33,14 +38,13 @@ if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
 
 
   //ohne Fehler geklappt:
-  $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-  $newFileName = 'user_' . $userId . '_' . time() . '.' . $extension;
-  $uploadDir = __DIR__ . "/../uploads/profile/";
-  $uploadPath = $uploadDir . $newFileName;
+  $extension = pathinfo($file['name'], PATHINFO_EXTENSION); //Extension wird zwischengespeichert
+  $newFileName = 'user_' . $userId . '_' . time() . '.' . $extension; //Neuer user-spezifischer Name
+  $uploadDir = __DIR__ . "/../uploads/profile/";  
+  $imagePath = "/cooknshare/uploads/profile/" . $newFileName;  //Pfad für die DB
+  $uploadPath = $uploadDir . $newFileName; //absoluter Upload Pfad
 
-  if(!is_dir($uploadDir)){
-    mkdir($uploadDir, 0755, true);
-  }
+  $oldImage = $user['image_path'] ?? null; //alten Pfad zum löschen
 
   if(!is_uploaded_file($file['tmp_name'])){
     die("Keine echte Upload Datei");
@@ -52,11 +56,19 @@ if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
     exit;
   }
 
+  if(!empty($oldImage) && $oldImage !== '/cooknshare/img/profile-default.svg'){
+    $oldImageServerPath = $_SERVER['DOCUMENT_ROOT'] . $oldImage;
+    if(file_exists($oldImageServerPath)){
+      unlink($oldImageServerPath);   
+    }
+    
+  }
+  
   $stmt = connect()->prepare(
     "UPDATE users SET image_path = ? WHERE id = ?"
   );
-  $stmt->execute([$newFileName, $userId]);
-  $_SESSION['login_user']['image_path'] = $newFileName;
+  $stmt->execute([$imagePath, $userId]);
+  $_SESSION['login_user']['image_path'] = $imagePath;
 
   $_SESSION['upload_success'] = "Profilbild erfolgreich aktualisiert.";
   header("Location: profil.php");
@@ -88,7 +100,7 @@ $recipeCount = $stmt->fetchColumn();
         <div class="alert alert-success fs-5"><?= htmlspecialchars($_SESSION['upload_success']) ?></div>
       <?php unset($_SESSION['upload_success']); endif; ?>
 
-      <img src="<?= $user['image_path'] ? '../uploads/profile/' . htmlspecialchars($user['image_path']) : '../img/profile-default.svg' ?>" alt="" class="img-fluid rounded-5 mb-5">
+      <img src="<?= $user['image_path'] ? htmlspecialchars($user['image_path']) : '/cooknshare/img/profile-default.svg' ?>" alt="Profilbild" class="profile-image mb-5">
       <form action="profil.php" method="POST" enctype="multipart/form-data">
         <input type="file" name="profile_image" class="form-control mb-3" accept="image/*" required>
         <button type="submit" name="upload_image" class="btn btn-primary fs-4">neues Profilbild hochladen</button>
