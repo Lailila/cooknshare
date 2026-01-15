@@ -107,7 +107,7 @@ class db_access
     SELECT r.image_path
     FROM favorites f
     JOIN recipes r ON f.recipe_id = r.id
-    where user_id = ?
+    where f.user_id = ?
     ORDER BY f.created_at DESC
     LIMIT 1
   ';

@@ -29,7 +29,7 @@ include "../includes/header.php";
             <div class="profile">
                 <h4>Mein Profil</h4>
                 <div class="card shadow-sm">
-                    <img src="<?= $login_user['image_path'] ? '../uploads/profile/' . htmlspecialchars($login_user['image_path']) : '../img/profile-default.svg' ?>" alt="" class="profi-img img-fluid rounded-5">
+                    <img src="<?= $login_user['image_path'] ? htmlspecialchars($login_user['image_path']) : '../img/profile-default.svg' ?>" alt="" class="profi-img img-fluid rounded-5">
                     <div class="button">
                         <a href="profil.php" class="btn w-100">Ansehen</a>
                     </div>
@@ -60,7 +60,6 @@ include "../includes/header.php";
                 <div class="content">
                     <div class=" mb-3">
                         <div class="card shadow-sm">
-                            <?php var_dump($FavImagePath); ?>
                             <img src="<?php echo $FavImagePath ?>">
                             <div class="card-body">
                                 <h5 class="card-title"></h5>
