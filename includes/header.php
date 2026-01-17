@@ -1,4 +1,7 @@
 <?php
+//Diese Datei enthält den header, der auf jeder Seite miteingebunden wird.
+//Die Navbar wird angepasst je nachdem, ob man angemeldet ist/Admin ist oder nicht angemeldet.
+
 session_start();
 require_once '../classes/UserLogic.php';
 require_once '../security.php';
@@ -61,7 +64,6 @@ $is_login = UserLogic::checkLogin();
               <a class="nav-link" href="../signup_in/login_form.php">
                 <button class="btn btn-secondary">Anmelden</button>
               </a>
-
           <?php endif; ?>
         </div>
     </nav>

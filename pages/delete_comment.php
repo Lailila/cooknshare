@@ -1,4 +1,6 @@
-<?php 
+<?php
+//Diese Datei wird aufgerufen wenn der Admin einen Kommentar löscht, und ist daher in admin.php action Attribut
+//davor wird noch geprüft ob es sich wirklich um einen Admin handelt, dann wird Kommentar gelöscht 
 $requiredRole = "admin";
 require __DIR__ . "/../includes/secure.php";
 require_once __DIR__ . "/../DB/DBconnect.php";

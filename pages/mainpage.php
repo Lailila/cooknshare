@@ -1,16 +1,21 @@
 <?php
+//Diese Datei enthält die Index Seite, es werden alle Rezepte, die in der DB sind responsive in Reihen angezeigt, 3 bei großen screens, 1 bei kleinen (mobile). 
+//Die Such- und Kategorie-Funktion laufen mittels GET Methode in der URL
+/*
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
+*/
 $title = 'Cook & Share';
 require_once "../DB/DBconnect.php";
 include "../includes/header.php";
+//category und search Variable werden gesetzt wenn ausgewählt
 $category = $_GET['category'] ?? null;
 $search = $_GET['search'] ?? null;
 $sql = (
   "SELECT r.id, r.title, r.user_id, r.image_path, r.ingredients, r.category, u.username 
   FROM recipes r 
   JOIN users u ON r.user_id = u.id");
+//falls suchergebnis vorhanden:
 $params = [];
 $conditions = [];
 if(!empty($category)){
@@ -26,8 +31,9 @@ if(!empty($conditions)){
 }
 $sql .= " ORDER BY r.created_at DESC";
 $stmt = connect()->prepare($sql);
+//falls keine Suche bleibt params leer
 $stmt->execute($params);
-$recipes = $stmt->fetchAll();
+$recipes = $stmt->fetchAll(); //alle Rezepte die mit Anfrage übereinstimmen werden aus der DB geladen
 ?>
     <div class="container-fluid text-center">
       <div class="row text-center align-items-center" style="height: 250px;">
@@ -39,6 +45,7 @@ $recipes = $stmt->fetchAll();
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
           Kategorie
         </button>
+<!-- Kategorie-Funktion -->
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="mainpage.php">Alle</a></li>
           <li><a class="dropdown-item" href="mainpage.php?category=appetizer">Vorspeise</a></li>
@@ -46,6 +53,7 @@ $recipes = $stmt->fetchAll();
           <li><a class="dropdown-item" href="mainpage.php?category=dessert">Nachspeise</a></li>
         </ul>
       </div>
+<!-- Such-Funktion -->
       <form class="d-flex me-3" method="GET" action="mainpage.php" role="search">
       <!-- Wenn Kategorie schon gesetzt ist, soll sie auch beim Suchen beibehalten werden, wird mitgeschickt -->
       <?php if (!empty($category)): ?>

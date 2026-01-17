@@ -1,22 +1,31 @@
 <?php 
+//Diese Datei ist die Adminseite, auf der Nutzer, Rezepte und Kommentare gelöscht werden können.
+//Je nachdem was gelöscht werden soll, wird mittels form action delete_user, delete_recipe oder delete_comment aufgerufen
+
 /*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);*/
+
+//die requiredRole wird hier als erstes gesetzt, um dann in secure mit der Rolle des Users verglichen zu werden
 $requiredRole = "admin";
 require __DIR__ . "/../includes/secure.php";
 require_once __DIR__ . "/../DB/DBconnect.php";
+//alle Nutzer werden gefetched
 $users = connect()->query("SELECT id, username, email, created_at, role FROM users ORDER BY created_at DESC")->fetchAll();
+//alle Rezepte werden gefetched
 $recipes = connect()->query("
   SELECT r.id, r.title, r.created_at, u.username FROM recipes r JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC
 ")->fetchAll();
+//alle Kommentare werden gefetched
 $comments = connect()->query("
   SELECT c.id, c.comment, c.created_at, u.username, r.title FROM comments c JOIN recipes r ON c.recipe_id = r.id JOIN users u ON c.user_id = u.id ORDER BY c.created_at DESC 
 ")->fetchAll();
 
 $currentPage = 'admin';
-require __DIR__ . "/../includes/header.php"; ?>
+include __DIR__ . "/../includes/header.php"; ?>
   <div class="container-fluid p-5">
     <h3 class="text-center mb-3">User</h3>
+<!-- User Tabelle -->
     <table class="table table-hover mb-5">
       <tr>
         <th scope="col">#</th>
@@ -24,6 +33,7 @@ require __DIR__ . "/../includes/header.php"; ?>
         <th scope="col">beigetreten am</th>
         <th scope="col">deaktivieren</th>
       </tr>
+<!-- foreach Schleife für alle User mit Daten-->
       <?php foreach($users as $user): ?>
         <tr>
           <th scope="row"><?= (int)$user['id'] ?></th>
@@ -49,6 +59,7 @@ require __DIR__ . "/../includes/header.php"; ?>
         <?php endforeach; ?>
     </table>
     <h3 class="text-center mb-3">Rezepte</h3>
+<!-- Rezepte Tabelle -->
     <table class="table table-hover mb-5">
       <tr>
         <th scope="col">#</th>
@@ -57,6 +68,7 @@ require __DIR__ . "/../includes/header.php"; ?>
         <th scope="col">erstellt am</th>
         <th scope="col">löschen</th>
       </tr>
+<!-- foreach Schleife für alle Rezepte mit Daten-->
       <?php foreach($recipes as $recipe): ?>
       <tr>
         <th scope="row"><?= (int)$recipe['id'] ?></th>
@@ -73,6 +85,7 @@ require __DIR__ . "/../includes/header.php"; ?>
       <?php endforeach; ?>
     </table>
     <h3 class="text-center mb-3">Kommentare</h3>
+<!-- Kommentare Tabelle -->
     <table class="table table-hover">
       <tr>
         <th scope="col">#</th>
@@ -82,6 +95,7 @@ require __DIR__ . "/../includes/header.php"; ?>
         <th scope="col">erstellt am</th>
         <th scope="col">löschen</th>
       </tr>
+<!-- foreach Schleife für alle Kommentare mit Daten-->
       <?php foreach($comments as $comment): ?>
       <tr>
         <th scope="row"><?= (int)$comment['id'] ?></th>

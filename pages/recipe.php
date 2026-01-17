@@ -1,10 +1,13 @@
 <?php 
-  error_reporting(E_ALL);
-  ini_set('display_errors', 1);
+//Diese Datei enthält die Rezeptdetailseite. Die Rezeptid wird per URL mitgeschickt und dann das entsprechende Rezept und Kommentare aus der DB geladen
+//Das Rezept kann mittels Favoriten Button als Favorit markiert werden und wird in DB gespeichert
+//Es können Kommentare geschrieben und eigene auch gelöscht werden
   $title = 'Rezept';
   require_once "../DB/DBconnect.php";
   include "../includes/header.php";
   $userId = $_SESSION['login_user']['id'] ?? null;
+
+  //Favoriten Button Funktion
   if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_favorite'])){
     if(empty($userId)){ //favorite_button gedrückt, aber nicht angemeldet -> login
       header("Location: ../signup_in/login_form.php");
