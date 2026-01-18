@@ -5,6 +5,7 @@
   $title = 'Rezept';
   require_once "../DB/DBconnect.php";
   include "../includes/header.php";
+  //User setzen, falls eingeloggt
   $userId = $_SESSION['login_user']['id'] ?? null;
 
   //Favoriten Button Funktion
@@ -26,25 +27,27 @@
     header("Location: recipe.php?id=".$recipeId);
     exit;
   }
+
+  //Kommentar Funktion
   if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_comment'])){  //Kommentar speichern
     if(empty($userId)){
       header("Location: ../signup_in/login_form.php");
       exit;
     }
-
     $recipeId = (int) $_POST['recipe_id'];
     $comment = trim($_POST['comment'] ?? '');
-
+    //kein leerer Kommentar kann gespeichert werden, zb nur Leerzeichen oder Zeilenumbruch
     if($comment === ''){
       header("Location: recipe.php?id=" . $recipeId);
       exit;
     }
+    //Kommentar wird in die DB gespeichert
     $stmt = connect()->prepare("INSERT INTO comments (recipe_id, user_id, comment, created_at) VALUES (?, ?, ?, NOW())");
     $stmt->execute([$recipeId, $userId, $comment]);
-
     header("Location: recipe.php?id=" . $recipeId);
     exit;
   }
+
   //eigenen Kommentar löschen:
   if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_delete_comment'])){
     if(empty($userId)){
@@ -53,38 +56,51 @@
     }
     $commentId = (int) $_POST['comment_id'];
     $recipeId = (int) $_POST['recipe_id'];
+    $isAdmin = ($_SESSION['login_user']['role'] ?? '') === 'admin';
 
-    $stmt = connect()->prepare("DELETE FROM comments WHERE id = ? AND (user_id = ? OR ? = 'admin')");
-    $stmt->execute([$commentId, $userId, $_SESSION['login_user']['role'] ?? '']);
-
+    if ($isAdmin) { //kann alle Kommentare löschen
+      $stmt = connect()->prepare(
+        "DELETE FROM comments WHERE id = ?"
+      );
+      $stmt->execute([$commentId]);
+    } else {  //User kann nur seine eigenen Kommentare löschen
+      $stmt = connect()->prepare(
+        "DELETE FROM comments WHERE id = ? AND user_id = ?"
+      );
+      $stmt->execute([$commentId, $userId]);
+    }  
     header("Location: recipe.php?id=" . $recipeId);
     exit;
   }
 
   $id = $_GET['id'] ?? null;  //rezept id in der URL
-
+  
+  //wenn keine id in der URL
   if(empty($id)){
     echo "<p>Kein Rezept ausgewählt</p>";
     include "../includes/footer.php";
     exit;
   }
-  //Rezept aus DB fetchen
+
+  //Rezept aus DB fetchen, ab jetzt wird auf $recipe['id'] usw. zugegriffen
   $stmt = connect()->prepare("SELECT r.id, r.title, r.image_path, r.ingredients, r.description, r.created_at, u.username FROM recipes r JOIN users u ON r.user_id = u.id WHERE r.id = ?");
   $stmt->execute([$id]);
   $recipe = $stmt->fetch();
+  
+  //wenn kein Rezept mit der id vorhanden
   if(empty($recipe)){
     echo "<p>Rezept nicht gefunden.</p>";
     include "../includes/footer.php";
     exit;  }
   
-
+  //überprüfen ob Rezept als Favorit markiert oder nicht (nur falls angemeldet)
   $isfavorite = false;
-  if(!empty($userId)){  //wenn Rezept schon gespeichert ist beim Aufruf
-    $favStmt = connect()->prepare("SELECT 1 From favorites WHERE user_id = ? AND recipe_id = ?");
+  if(!empty($userId)){ 
+    $favStmt = connect()->prepare("SELECT 1 From favorites WHERE user_id = ? AND recipe_id = ?"); //select 1: existiert Zeile oder nicht?
     $favStmt->execute([$userId, $recipe['id']]);
     $isfavorite = (bool) $favStmt->fetch();
   }
-  //Kommentare aus der DB:
+  //Kommentare aus der DB fetchen
   $stmt = connect()->prepare("SELECT c.id, c.comment, c.user_id, c.created_at, u.username FROM comments c JOIN users u ON c.user_id = u.id WHERE recipe_id = ? ORDER BY c.created_at DESC");
   $stmt->execute([$recipe['id']]);
   $comments = $stmt->fetchAll();
@@ -100,18 +116,20 @@
             <h1 class="mb-3"><?= htmlspecialchars($recipe['title']) ?></h1>
             <p>von <?= htmlspecialchars($recipe['username']) ?></p>
             <div class="actions">
+<!-- Favoriten-Funktion, nur möglich wenn eingeloggt -->
               <?php if(!empty($userId)): ?>
               <form method="POST" class="d-inline">
                 <input type="hidden" name="recipe_id" class="recipe_id" value="<?= (int)$recipe['id'] ?>">
                 <button type="submit" name="btn_favorite" class="btn <?= $isfavorite ? 'btn-secondary' : 'btn-outline-secondary' ?>"><?= $isfavorite ? '★ Favorit' : '☆ Favorit'?></button>
               </form>
+            <!-- falls nicht eingeloggt kein Button -->
             <?php else: ?>
               <p class="text-muted">Bitte einloggen, um als Favorit zu speichern</p>
             <?php endif; ?>
             </div>
           </div>
         </div>
-
+<!--Zutaten-Bereich -->
         <section class="row">
           <div class="zutaten col mb-5 shadow p-3 me-5 bg-body rounded">
             <h2>Zutaten</h2>
@@ -126,21 +144,20 @@
               <?php endforeach;?>            
             </ul>
           </div>
-
+<!-- Anleitungs-Bereich-->
           <div class="anleitung col mb-5 shadow p-3 bg-body rounded">
             <h2>Anleitung</h2>
             <ol>
-              <?php $steps = explode(".", $recipe['description']);
+              <?php $steps = explode(".", $recipe['description']); //String zu Array. Jeder Anleitungsschritt ist ein Satz, durch . getrennt
                 foreach($steps as $step):
                   $step = trim($step);
-                  if($step === "") continue;
-              ?>
+                  if($step === "") continue; ?>
               <li><?= htmlspecialchars($step) ?></li>
               <?php endforeach; ?>
             </ol>
           </div>
         </section>
-
+<!-- Kommentar-Bereich -->
         <section class="comment shadow p-3 bg-body rounded">
           <h2>Kommentare</h2>
           <?php if(empty($comments)):?>
@@ -150,9 +167,9 @@
           <div class="comment mb-3">
             <p class="comment-meta"><strong><?= htmlspecialchars($comment['username']) ?></strong> • <?= date('d.m.Y', strtotime($comment['created_at'])) ?></p>
             <p><?= htmlspecialchars($comment['comment']) ?></p>
-          <!-- Kommentar löschen Form-->
+          <!-- Kommentar löschen Form, User dürfen ihre eigenen Kommentare löschen und Admin alle -->
             <?php if(!empty($userId) && ($comment['user_id'] === $userId) || ($_SESSION['login_user']['role'] ?? '') === 'admin'): ?>
-              <form method="POST" class="mt-1">
+              <form method="POST" class="mt-1" onsubmit="return confirm('Kommentar wirklich löschen?');">
                 <input type="hidden" name="comment_id" value="<?= (int)$comment['id'] ?>">
                 <input type="hidden" name="recipe_id" value="<?= (int)$recipe['id'] ?>">
                 <button type="submit" name="btn_delete_comment" class="btn btn-sm btn-outline-danger">Kommentar löschen</button>
@@ -161,7 +178,7 @@
           </div>
           <?php endforeach; ?>
           <?php endif; ?>
-
+<!-- Kommentar-Schreibe-Funktion -->
           <?php if(!empty($userId)): ?>
             <form method="POST" class="mt-3">
               <input type="hidden" name="recipe_id" value="<?= (int)$recipe['id'] ?>">
@@ -176,9 +193,7 @@
           <?php else: ?>
             <p class="text-muted mt-3">Bitte einloggen, um einen Kommentar zu schreiben.</p>
           <?php endif; ?>
-        
         </section>
       </div>
-
 <?php include "../includes/footer.php"; ?>
 

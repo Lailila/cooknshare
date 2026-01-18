@@ -1,12 +1,12 @@
 <?php 
 //Diese Datei ist die Adminseite, auf der Nutzer, Rezepte und Kommentare gelöscht werden können.
-//Je nachdem was gelöscht werden soll, wird mittels form action delete_user, delete_recipe oder delete_comment aufgerufen
+//Je nachdem was gelöscht werden soll, wird mittels form action delete_user.php, delete_recipe.php oder delete_comment.php aufgerufen
 
 /*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);*/
 
-//die requiredRole wird hier als erstes gesetzt, um dann in secure mit der Rolle des Users verglichen zu werden
+//die requiredRole wird hier als erstes gesetzt, um dann in secure.php mit der Rolle des Users verglichen zu werden
 $requiredRole = "admin";
 require __DIR__ . "/../includes/secure.php";
 require_once __DIR__ . "/../DB/DBconnect.php";
