@@ -39,17 +39,6 @@ $recipes = $stmt->fetchAll(); //alle Rezepte die mit Anfrage übereinstimmen wer
     <h2 class="page-title mb-5 text-center">Willkommen auf <span></span><em><strong>Cook & Share</strong></em>!</h2>
 
   <div class="container mb-3">
-    <div class="dropdown col">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-        Kategorie
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="mainpage.php">Alle</a></li>
-        <li><a class="dropdown-item" href="mainpage.php?category=appetizer">Vorspeise</a></li>
-        <li><a class="dropdown-item" href="mainpage.php?category=maindish">Hauptspeise</a></li>
-        <li><a class="dropdown-item" href="mainpage.php?category=dessert">Nachspeise</a></li>
-      </ul>
-    </div>
     <div class="container mb-3">
       <div class="dropdown col">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
