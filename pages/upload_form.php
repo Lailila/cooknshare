@@ -72,9 +72,9 @@ include "../includes/header.php";
 
       <div class="mb-3">
         <label for="Anleitung" class="fs-4 mb-2">Anleitung:</label>
-        <textarea class="form-control" name="description" id="Anleitung" placeholder="1.Die Zwiebel und den Knoblauch abziehen und sehr fein schneiden
-2.Die Chilischote entkernen und ebenso fein hacken
-3.Die Kirschtomaten waschen und halbieren...
+        <textarea class="form-control" name="description" id="Anleitung" placeholder="Die Zwiebel und den Knoblauch abziehen und sehr fein schneiden.
+Die Chilischote entkernen und ebenso fein hacken.
+Die Kirschtomaten waschen und halbieren...
 "><?php echo htmlspecialchars($old['description'] ?? '', ENT_QUOTES); ?></textarea>
 
         <?php if (isset($err_msgs['description'])) : ?>

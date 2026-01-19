@@ -145,14 +145,18 @@ $comments = $stmt->fetchAll();
         <?php endforeach; ?>
     </div>
     <!-- Anleitungs-Bereich-->
-    <div class="description mb-5 shadow p-3 bg-body rounded">
+    <div class="anleitung col mb-5 shadow p-3 bg-body rounded">
       <h2>Anleitung</h2>
-        <?php $steps = explode(".", $recipe['description']); //String zu Array. Jeder Anleitungsschritt ist ein Satz, durch . getrennt
-        foreach ($steps as $step):
-          $step = trim($step);
-          if ($step === "") continue; ?>
-          <p><?= htmlspecialchars($step) ?></p>
+      <ol>
+        <?php
+          $steps = explode(".", $recipe['description']); // nach Punkten trennen
+          foreach ($steps as $step):
+            $step = trim($step);
+            if ($step === "") continue;
+        ?>
+          <li><?= htmlspecialchars($step) ?></li>
         <?php endforeach; ?>
+      </ol>
     </div>
   <!-- Kommentar-Bereich -->
   <section class="comment shadow p-3 bg-body rounded">
