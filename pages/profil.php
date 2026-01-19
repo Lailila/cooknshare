@@ -9,11 +9,11 @@ $userId = $user['id'];
 include "../includes/header.php";
 
 //Profilbild hochladen
-if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
+if (isset($_POST['upload_image']) && isset($_FILES['profile_image'])) {
   $file = $_FILES['profile_image'];
   $errors = [];
 
-  if($file['error'] !== 0){
+  if ($file['error'] !== 0) {
     $errors[] = "Datei konnte nicht hochgeladen werden.";
   }
 
@@ -27,7 +27,7 @@ if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
 }
 
   $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-  if(!in_array($file['type'], $allowedTypes)){
+  if (!in_array($file['type'], $allowedTypes)) {
     $errors[] = "Nur JPG, PNG oder WEBP erlaubt.";
   }
 
@@ -47,7 +47,7 @@ if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
 
   $oldImage = $user['image_path'] ?? null; //alten Pfad zum löschen
 
-  if(!is_uploaded_file($file['tmp_name'])){
+  if (!is_uploaded_file($file['tmp_name'])) {
     die("Keine echte Upload Datei");
   }
 
@@ -130,7 +130,5 @@ $recipeCount = $stmt->fetchColumn();
       </table>
     </div>
   </div>
-  </div>
-</div>
 
-<?php require "../includes/footer.php"; ?>
+  <?php require "../includes/footer.php"; ?>

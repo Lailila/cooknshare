@@ -72,6 +72,8 @@
     header("Location: recipe.php?id=" . $recipeId);
     exit;
   }
+  $stmt = connect()->prepare("INSERT INTO comments (recipe_id, user_id, comment, created_at) VALUES (?, ?, ?, NOW())");
+  $stmt->execute([$recipeId, $userId, $comment]);
 
   $id = $_GET['id'] ?? null;  //rezept id in der URL
   
@@ -182,18 +184,11 @@
           <?php if(!empty($userId)): ?>
             <form method="POST" class="mt-3">
               <input type="hidden" name="recipe_id" value="<?= (int)$recipe['id'] ?>">
-              <div class="mb-3">
-                <label for="comment" class="form-label">Dein Kommentar</label>
-                <textarea class="form-control" name="comment" id="comment" rows="3" required></textarea>
-              </div>
-            <button type="submit" name="btn_comment" class="btn btn-primary">
-              Kommentar absenden
-            </button>
-          </form>
-          <?php else: ?>
-            <p class="text-muted mt-3">Bitte einloggen, um einen Kommentar zu schreiben.</p>
+              <button type="submit" name="btn_delete_comment" class="btn btn-sm btn-outline-danger">Kommentar löschen</button>
+            </form>
           <?php endif; ?>
         </section>
       </div>
 <?php include "../includes/footer.php"; ?>
 
+<?php include "../includes/footer.php"; ?>

@@ -27,9 +27,9 @@ include "../includes/header.php";
     <div class="flex mb-5">
         <div class="left">
             <div class="profile">
-                <h4>Mein Profil</h4>
+                <h4 class="content-title">Mein Profil</h4>
                 <div class="card shadow-sm">
-                    <img src="<?= $login_user['image_path'] ? htmlspecialchars($login_user['image_path']) : '../img/profile-default.svg' ?>" alt="" class="profi-img img-fluid rounded-5">
+                    <img src="<?= $login_user['image_path'] ? htmlspecialchars($login_user['image_path']) : '../img/profile-default.svg' ?>" alt="" class="profi-img img-fluid">
                     <div class="button">
                         <a href="profil.php" class="btn w-100">Ansehen</a>
                     </div>
@@ -40,7 +40,7 @@ include "../includes/header.php";
 
         <div class="right">
             <div class="my-recipes">
-                <h4>Meine Rezepte</h4>
+                <h4 class="content-title">Meine Rezepte</h4>
                 <div class="content">
                     <div class="mb-3">
                         <div class="card shadow-sm">
@@ -56,7 +56,7 @@ include "../includes/header.php";
                 </div>
             </div>
             <div class="favorites">
-                <h4>Meine Favoriten</h4>
+                <h4 class="content-title">Meine Favoriten</h4>
                 <div class="content">
                     <div class=" mb-3">
                         <div class="card shadow-sm">

@@ -57,14 +57,6 @@
                   <input class="btn btn-secondary btn-sm" type="submit" value="löschen">
                 </form>
               </div>
-
-            <?php elseif ($title === 'Meine Favoriten' || $title === 'Cook & Share') : ?>
-              <label class="like-button">
-                <input
-                  type="checkbox"
-                  class="favorite-checkbox">
-                <span class="heart"></span>
-              </label>
             <?php endif; ?>
           </div>
 
