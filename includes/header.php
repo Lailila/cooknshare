@@ -59,7 +59,7 @@ $is_login = UserLogic::checkLogin();
       </button>
 
       <!-- wenn man nicht eingeloggt ist, wird nur Anmelden-Button sichtbar-->
-    <?php elseif ($title === 'Cook & Share'): ?>
+    <?php elseif ($title === 'Cook & Share'||$title === 'Rezept'): ?>
       <a href="../signup_in/login_form.php">
         <button class="btn btn-secondary">Anmelden</button>
       </a>

@@ -15,8 +15,6 @@ if (!isset($_GET['id'])) {
   exit;
 }
 
-
-
 $err_msgs = $_SESSION['err_msgs'] ?? [];
 unset($_SESSION['err_msgs']);
 
@@ -54,8 +52,8 @@ $title = 'Rezept bearbeiten';
 include "../includes/header.php";
 ?>
 
-<div class="align-items-center p-5">
-  <h2 class="text-center p-5"><em>Rezept Bearbeiten</em></h2>
+<div class="upload container main-wrap">
+  <h2 class="page-title mb-5 text-center"><em>Rezept Bearbeiten</em></h2>
   <div class="container-fluid">
     <form action="./update_recipe.php" method="post" enctype="multipart/form-data">
 
@@ -91,7 +89,7 @@ include "../includes/header.php";
 
       <div class="mb-3">
         <label for="rezept-zutaten" class="fs-4 mb-2">Zutaten:</label>
-        <input type="text" class="form-control" id="rezept-zutaten" placeholder="Mehl, Eier, Zucker, ..." name="ingredients" value="<?php echo htmlspecialchars($form['ingredients'] ?? '', ENT_QUOTES); ?>">
+        <textarea class="form-control" id="rezept-zutaten" placeholder="100g Mehl, 1 Ei, 30g Zucker, ..." name="ingredients"><?php echo htmlspecialchars($form['ingredients'] ?? '', ENT_QUOTES); ?></textarea>
         <?php if (isset($err_msgs['ingredients'])) : ?>
           <p class="text-danger"><?php echo $err_msgs['ingredients']; ?></p>
         <?php endif; ?>
@@ -99,7 +97,7 @@ include "../includes/header.php";
 
       <div class="mb-3">
         <label for="Anleitung" class="fs-4 mb-2">Anleitung:</label>
-        <textarea class="form-control" name="description" id="Anleitung"><?php echo htmlspecialchars($form['description'] ?? '', ENT_QUOTES); ?></textarea>
+        <textarea class="form-control" name="description" id="Anleitung"  ><?php echo htmlspecialchars($form['description'] ?? '', ENT_QUOTES); ?></textarea>
         <?php if (isset($err_msgs['description'])) : ?>
           <p class="text-danger"><?php echo $err_msgs['description']; ?></p>
         <?php endif; ?>
