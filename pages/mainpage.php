@@ -13,48 +13,46 @@ $sql = (
   JOIN users u ON r.user_id = u.id");
 $params = [];
 $conditions = [];
-if(!empty($category)){
-  $conditions[] .= "r.category = ?";//Platzhalter für category
-  $params[] = $category;//Parameter 1
+if (!empty($category)) {
+  $conditions[] .= "r.category = ?"; //Platzhalter für category
+  $params[] = $category; //Parameter 1
 }
-if(!empty($search)){
-  $conditions[] = "r.title LIKE ?";//Plathalter für Suchbegriff
-  $params[] = "%" . $search . "%";//Parameter 2
+if (!empty($search)) {
+  $conditions[] = "r.title LIKE ?"; //Plathalter für Suchbegriff
+  $params[] = "%" . $search . "%"; //Parameter 2
 }
-if(!empty($conditions)){
-  $sql .= " WHERE " . implode(" AND ", $conditions);//macht conditions array zu string
+if (!empty($conditions)) {
+  $sql .= " WHERE " . implode(" AND ", $conditions); //macht conditions array zu string
 }
 $sql .= " ORDER BY r.created_at DESC";
 $stmt = connect()->prepare($sql);
 $stmt->execute($params);
 $recipes = $stmt->fetchAll();
 ?>
-    <div class="container-fluid text-center">
-      <div class="row text-center align-items-center" style="height: 250px;">
-        <h2 class="col">Willkommen auf <span></span><em><strong>Cook & Share</strong></em>!</h2>
-      </div>
+<div class="container main-wrap">
+    <h2 class="page-title mb-5 text-center">Willkommen auf <span></span><em><strong>Cook & Share</strong></em>!</h2>
+
+  <div class="container mb-3">
+    <div class="dropdown col">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        Kategorie
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="mainpage.php">Alle</a></li>
+        <li><a class="dropdown-item" href="mainpage.php?category=appetizer">Vorspeise</a></li>
+        <li><a class="dropdown-item" href="mainpage.php?category=maindish">Hauptspeise</a></li>
+        <li><a class="dropdown-item" href="mainpage.php?category=dessert">Nachspeise</a></li>
+      </ul>
     </div>
-    <div class="container mb-3">
-      <div class="dropdown col">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-          Kategorie
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="mainpage.php">Alle</a></li>
-          <li><a class="dropdown-item" href="mainpage.php?category=appetizer">Vorspeise</a></li>
-          <li><a class="dropdown-item" href="mainpage.php?category=maindish">Hauptspeise</a></li>
-          <li><a class="dropdown-item" href="mainpage.php?category=dessert">Nachspeise</a></li>
-        </ul>
-      </div>
-      <form class="d-flex me-3" method="GET" action="mainpage.php" role="search">
+    <form class="d-flex me-3" method="GET" action="mainpage.php" role="search">
       <!-- Wenn Kategorie schon gesetzt ist, soll sie auch beim Suchen beibehalten werden, wird mitgeschickt -->
       <?php if (!empty($category)): ?>
         <input type="hidden" name="category" value="<?= htmlspecialchars($category) ?>">
       <?php endif; ?>
       <input class="form-control me-2" type="search" name="search" placeholder="Pizza..." aria-label="Search">
-        <button class="btn btn-secondary" type="submit">Search</button>
-      </form>
-    </div>
-<?php include "../includes/recipe-card.php" ?>
-<?php include "../includes/footer.php" ?>
-<script src="../js/favorite.js"></script>
+      <button class="btn btn-secondary" type="submit">Search</button>
+    </form>
+  </div>
+  <?php include "../includes/recipe-card.php" ?>
+  <?php include "../includes/footer.php" ?>
+</div>

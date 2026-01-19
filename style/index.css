@@ -1,15 +1,231 @@
+body {
+  font-family: "EB Garamond", "Zen Old Mincho", serif;
+  font-size: 20px;
+  color: #333;
+}
+a {
+  text-decoration: none;
+  transition: 0.3s;
+  color: #111;
+}
+a:hover {
+  opacity: 0.7;
+}
+
+img {
+  max-width: 100%;
+  vertical-align: bottom;
+  margin-bottom: 0;
+}
+
+ul {
+  margin-bottom: 0;
+}
+
+.wrapper {
+  /* max-width: 1270px; */
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 7%;
+  padding-top: 160px;
+}
+@media (max-width: 880px) {
+  .wrapper {
+    padding: 0 4%;
+  }
+}
+
+#header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #18191a;
+  opacity: 0.9;
+  z-index: 20;
+  /* max-width: 1600px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 7% 0;
+}
+@media (max-width: 880px) {
+  #header {
+    padding: 0 4%;
+    position: static;
+    opacity: 1;
+  }
+}
+
+#header .logo {
+  width: 120px;
+  line-height: 1px;
+}
+@media (max-width: 880px) {
+  #header .logo {
+    padding: 10px 0;
+    margin-bottom: 0;
+  }
+}
+#header .logo a {
+  display: block;
+}
+#header .logo a img {
+  width: 100px;
+}
+@media (max-width: 880px) {
+  #header .logo a img {
+    width: 60px;
+  }
+}
+
+@media (max-width: 880px) {
+  #navi {
+    opacity: 0;
+    transition: ease 0.4s;
+    background-color: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 40;
+    visibility: hidden;
+  }
+}
+#navi .h-navi {
+  display: flex;
+  padding: 10px 0;
+}
+@media (max-width: 880px) {
+  #navi .h-navi {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 100px;
+    row-gap: 25px;
+  }
+}
+#navi .h-navi li {
+  margin-left: 30px;
+}
+@media (max-width: 880px) {
+  #navi .h-navi li {
+    margin-left: 0;
+  }
+}
+#navi .h-navi li a {
+  color: #fff;
+}
+#navi .h-navi li a:hover {
+  color: #fff;
+}
+@media (max-width: 880px) {
+  #navi .h-navi li a {
+    color: #fff;
+  }
+}
+
+.hamburger {
+  display: none;
+}
+@media (max-width: 880px) {
+  .hamburger {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    padding: 0 16px;
+    border: none;
+    outline: none;
+    background: none;
+    background-color: #ffa548;
+    cursor: pointer;
+    appearance: none;
+  }
+}
+@media (max-width: 880px) {
+  .hamburger span {
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    position: relative;
+    transition: ease 0.4s;
+    display: block;
+    left: 0;
+    border-radius: 4px;
+  }
+  .hamburger span:nth-child(1) {
+    top: 0;
+  }
+  .hamburger span:nth-child(2) {
+    margin: 6px 0;
+  }
+  .hamburger span:nth-child(3) {
+    top: 0;
+  }
+}
+
+@media (max-width: 880px) {
+  #navi.active {
+    visibility: visible;
+    opacity: 0.8;
+  }
+  #navi.active .h-navi .home a {
+    opacity: 0.6;
+  }
+}
+
+.hamburger.active span:nth-child(1) {
+  top: 8px;
+  transform: rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  top: -8px;
+  transform: rotate(-45deg);
+}
+
+.logout-link {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.main-wrap {
+  padding-top: 50px;
+  padding-bottom: 100px;
+}
+@media (max-width: 880px) {
+  .main-wrap {
+    padding-bottom: 30px;
+  }
+}
+
+.page-title {
+  padding-top: 160px;
+}
+@media (max-width: 880px) {
+  .page-title {
+    padding-top: 0;
+  }
+}
+
 li {
   list-style: none;
 }
 .anleitung ol li {
   list-style: decimal;
   padding-left: 1.5rem;
-}
-
-a {
-  text-decoration: none;
-  transition: 0.3s;
-  color: #24292e;
 }
 
 .index-logo {
@@ -39,15 +255,29 @@ a {
   margin-top: 50px;
 }
 
-/*rezept.html*/
-.recipe-detail img {
+/*recipe.php*/
+.r-image {
+  padding-top: 160px;
+}
+
+.r-image img {
   width: 100%;
   height: auto;
   max-height: 550px;
   object-fit: cover;
+  border-radius: 1%;
 }
 
-/* favorite.html*/
+@media (max-width: 880px) {
+  .r-image {
+    padding-top: 0;
+  }
+  .r-image img {
+    height: 260px;
+  }
+}
+
+/* favorite.php*/
 .favoriten {
   padding: 30px 0;
 }
@@ -85,62 +315,12 @@ a {
   /* margin-bottom: 8px; */
 }
 
-.ellipsis-1 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* upload_form.php */
+.upload #rezept-zutaten {
+  height: 100px;
 }
-
-.ellipsis-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* favorite.php */
-.like-button {
-  cursor: pointer;
-  display: inline-block;
-}
-
-.like-button input {
-  display: none;
-}
-
-.heart {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  background-color: #ccc;
-  transform: rotate(-45deg);
-  display: inline-block;
-}
-
-.heart::before,
-.heart::after {
-  content: "";
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  background-color: #ccc;
-  border-radius: 50%;
-}
-
-.heart::before {
-  top: -12px;
-  left: 0;
-}
-
-.heart::after {
-  left: 12px;
-  top: 0;
-}
-
-.like-button input:checked + .heart,
-.like-button input:checked + .heart::before,
-.like-button input:checked + .heart::after {
-  background-color: #ed4956; /* Instagramっぽい赤 */
+.upload #Anleitung {
+  height: 250px;
 }
 
 /* MyRecipe.php */
@@ -162,6 +342,10 @@ a {
   flex-direction: column; /* 縦方向 */
   justify-content: space-between;
 }
+.dashboard .right img {
+  aspect-ratio: 5 / 3;
+  object-fit: cover;
+}
 
 .dashboard .profi-img {
   object-fit: cover;
@@ -169,16 +353,35 @@ a {
   aspect-ratio: 1 / 1;
 }
 
-.dashboard .button{
+.dashboard .button {
   padding: 5% 20%;
 }
 
-.dashboard .btn{
+.dashboard .btn {
   width: 100%;
   color: #fff;
   background-color: #ffa548;
 }
 
+@media (max-width: 880px) {
+  .dashboard .flex {
+    flex-direction: column;
+  }
+  .dashboard .left {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+  .dashboard .right {
+    width: 100%;
+  }
+
+  .my-recipes {
+    margin-bottom: 30px;
+  }
+  .content-title {
+    margin-bottom: 15px;
+  }
+}
 
 /* footer */
 footer {
@@ -189,7 +392,7 @@ footer {
   text-align: center;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 880px) {
   .fav-list {
     flex-direction: column;
   }

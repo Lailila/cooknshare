@@ -6,7 +6,7 @@ require_once '../classes/UserLogic.php';
 $result = UserLogic::checkLogin();
 
 //wenn man schon eingeloggt ist, wird der Browser auf dashboard.php weitergeleitet.
-if($result) {
+if ($result) {
   header('Location: dashboard.php');
   return;
 }
@@ -22,15 +22,15 @@ if (!isset($_SESSION['csrf_token']) || $token !== $_SESSION['csrf_token']) {
 unset($_SESSION['csrf_token']);
 
 // Validation
-if(!$username = filter_input(INPUT_POST, 'username')) {
+if (!$username = filter_input(INPUT_POST, 'username')) {
   $err['username'] = 'Bitte geben Sie einen Benutzernamen ein';
 }
-if(!$email = filter_input(INPUT_POST, 'email')) {
+if (!$email = filter_input(INPUT_POST, 'email')) {
   $err['email'] = 'Bitte geben Sie eine E-Mail Adresse ein';
 }
 $password = filter_input(INPUT_POST, 'password');
 
-if (!preg_match("/\A[a-z\d]{8,100}+\z/i",$password)) {
+if (!preg_match("/\A[a-z\d]{8,100}+\z/i", $password)) {
   $err['password'] = 'Passwort müssen zwischen 8 und 100 Zeichen lang sein und aus alphanumerischen Zeichen bestehen.';
 }
 $password_conf = filter_input(INPUT_POST, 'password_conf');
@@ -53,37 +53,18 @@ if (count($err) === 0) {
     header('Location: signup_form.php');
     exit;
   }
-  
 }
-
+$title = 'Sign Up';
+include "../includes/header.php";
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <title>Login</title>
-  <link rel="stylesheet" href="../style/index.css">
-</head>
 
-<body>
+<div class="container main-wrap">
 
-  <?php include "../includes/header.php" ?>
+  <p class="text-center page-title">erfolgreich registriert!</p>
 
-  <main>
-    <div class="container text-center mt-5">
-      
-        <p>erfolgreich registriert!</p>
-      
-      <div class="text-center link"><a class="text-primary" href="login_form.php">Login</a></div>
-    </div>
-  </main>
+  <div class="text-center link"><a class="text-primary" href="login_form.php">Login</a></div>
+</div>
 
-  <?php include "../includes/footer.html" ?>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+<?php include "../includes/footer.php" ?>

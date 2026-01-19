@@ -1,4 +1,4 @@
-<?php  
+<?php
 require "../includes/secure.php";
 require_once "../DB/DBconnect.php";
 $title = 'Mein Profil';
@@ -8,29 +8,29 @@ $userId = $user['id'];
 include "../includes/header.php";
 
 //Profilbild hochladen
-if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
+if (isset($_POST['upload_image']) && isset($_FILES['profile_image'])) {
   $file = $_FILES['profile_image'];
   $errors = [];
 
-  if($file['error'] !== 0){
+  if ($file['error'] !== 0) {
     $errors[] = "Datei konnte nicht hochgeladen werden.";
   }
 
-  if(!empty($file['tmp_name']) && !getimagesize($file['tmp_name'])){
+  if (!empty($file['tmp_name']) && !getimagesize($file['tmp_name'])) {
     $errors[] = "Die Datei ist kein gültiges Bild.";
   }
 
   $maxFileSize = 5 * 1024 * 1024; // 5 MB
   if ($file['size'] > $maxFileSize) {
     $errors[] = "Das Bild darf maximal 2 MB groß sein.";
-}
+  }
 
   $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-  if(!in_array($file['type'], $allowedTypes)){
+  if (!in_array($file['type'], $allowedTypes)) {
     $errors[] = "Nur JPG, PNG oder WEBP erlaubt.";
   }
 
-  if(!empty($errors)){
+  if (!empty($errors)) {
     $_SESSION['upload_errors'] = $errors;
     header("Location: profil.php");
     exit;
@@ -40,30 +40,29 @@ if(isset($_POST['upload_image']) && isset($_FILES['profile_image'])){
   //ohne Fehler geklappt:
   $extension = pathinfo($file['name'], PATHINFO_EXTENSION); //Extension wird zwischengespeichert
   $newFileName = 'user_' . $userId . '_' . time() . '.' . $extension; //Neuer user-spezifischer Name
-  $uploadDir = __DIR__ . "/../uploads/profile/";  
+  $uploadDir = __DIR__ . "/../uploads/profile/";
   $imagePath = "/cooknshare/uploads/profile/" . $newFileName;  //Pfad für die DB
   $uploadPath = $uploadDir . $newFileName; //absoluter Upload Pfad
 
   $oldImage = $user['image_path'] ?? null; //alten Pfad zum löschen
 
-  if(!is_uploaded_file($file['tmp_name'])){
+  if (!is_uploaded_file($file['tmp_name'])) {
     die("Keine echte Upload Datei");
   }
 
-  if(!move_uploaded_file($file['tmp_name'], $uploadPath)) {
+  if (!move_uploaded_file($file['tmp_name'], $uploadPath)) {
     $_SESSION['upload_errors'] = ["Die Datei konnte nicht gespeichert werden."];
     header("Location: profil.php");
     exit;
   }
 
-  if(!empty($oldImage) && $oldImage !== '/cooknshare/img/profile-default.svg'){
+  if (!empty($oldImage) && $oldImage !== '/cooknshare/img/profile-default.svg') {
     $oldImageServerPath = $_SERVER['DOCUMENT_ROOT'] . $oldImage;
-    if(file_exists($oldImageServerPath)){
-      unlink($oldImageServerPath);   
+    if (file_exists($oldImageServerPath)) {
+      unlink($oldImageServerPath);
     }
-    
   }
-  
+
   $stmt = connect()->prepare(
     "UPDATE users SET image_path = ? WHERE id = ?"
   );
@@ -81,53 +80,56 @@ $stmt = connect()->prepare("SELECT COUNT(*) FROM recipes WHERE user_id = ?");
 $stmt->execute([$userId]);
 $recipeCount = $stmt->fetchColumn();
 ?>
+<div class="container text-center contents">
+  <h2 class="page-title mb-5">Mein Profil</h2>
+  <div class="align-items-center justify-content-between d-flex">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-4 col-12 text-center">
+          <?php if (!empty($_SESSION['upload_errors'])): ?>
+            <div class="alert alert-danger fs-5">
+              <ul class="mb-0">
+                <?php foreach ($_SESSION['upload_errors'] as $error): ?>
+                  <li><?= htmlspecialchars($error) ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+          <?php unset($_SESSION['upload_errors']);
+          endif; ?>
 
-  <div class="align-items-center vh-100 justify-content-between d-flex">
-  <div class="container-fluid">
-    <div class="row">
-    <div class="col-lg-4 col-12 text-center">
-      <?php if (!empty($_SESSION['upload_errors'])): ?>
-        <div class="alert alert-danger fs-5">
-          <ul class="mb-0">
-            <?php foreach ($_SESSION['upload_errors'] as $error): ?>
-            <li><?=  htmlspecialchars($error) ?></li>
-            <?php endforeach; ?>
-          </ul>
+          <?php if (!empty($_SESSION['upload_success'])): ?>
+            <div class="alert alert-success fs-5"><?= htmlspecialchars($_SESSION['upload_success']) ?></div>
+          <?php unset($_SESSION['upload_success']);
+          endif; ?>
+
+          <img src="<?= $user['image_path'] ? htmlspecialchars($user['image_path']) : '/cooknshare/img/profile-default.svg' ?>" alt="Profilbild" class="profile-image mb-5">
+          <form action="profil.php" method="POST" enctype="multipart/form-data">
+            <input type="file" name="profile_image" class="form-control mb-3" accept="image/*" required>
+            <button type="submit" name="upload_image" class="btn btn-primary fs-4">neues Profilbild hochladen</button>
+          </form>
         </div>
-      <?php unset($_SESSION['upload_errors']); endif; ?>
-
-      <?php if(!empty($_SESSION['upload_success'])): ?>
-        <div class="alert alert-success fs-5"><?= htmlspecialchars($_SESSION['upload_success']) ?></div>
-      <?php unset($_SESSION['upload_success']); endif; ?>
-
-      <img src="<?= $user['image_path'] ? htmlspecialchars($user['image_path']) : '/cooknshare/img/profile-default.svg' ?>" alt="Profilbild" class="profile-image mb-5">
-      <form action="profil.php" method="POST" enctype="multipart/form-data">
-        <input type="file" name="profile_image" class="form-control mb-3" accept="image/*" required>
-        <button type="submit" name="upload_image" class="btn btn-primary fs-4">neues Profilbild hochladen</button>
-      </form>
-    </div>
-    <div class="col-lg-8 col-12">
-      <table class="table table-hover fs-4">
-        <tr>
-          <td class="fw-bold">Username:</td>
-          <td><?=  htmlspecialchars($user['username']) ?></td>
-        </tr>
-        <tr>
-          <td class="fw-bold">E-Mail:</td>
-          <td><?= htmlspecialchars($user['email']) ?></td>
-        </tr>
-        <tr>
-          <td class="fw-bold">Hochgeladene Rezepte:</td>
-          <td><?= $recipeCount ?></td>
-        </tr>
-        <tr>
-          <td class="fw-bold">beigetreten am:</td>
-          <td><?= date("d.m.Y", strtotime($user['created_at'])) ?></td>
-        </tr>
-      </table>
+        <div class="col-lg-8 col-12">
+          <table class="table table-hover fs-4">
+            <tr>
+              <td class="fw-bold">Username:</td>
+              <td><?= htmlspecialchars($user['username']) ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">E-Mail:</td>
+              <td><?= htmlspecialchars($user['email']) ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Hochgeladene Rezepte:</td>
+              <td><?= $recipeCount ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">beigetreten am:</td>
+              <td><?= date("d.m.Y", strtotime($user['created_at'])) ?></td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
-  </div>
-</div>
 
-<?php require "../includes/footer.php"; ?>
+  <?php require "../includes/footer.php"; ?>
