@@ -1,5 +1,9 @@
 <?php 
-//Seiten sind abgesichert vor URL Zugriffen
+//Diese Datei schützt den Zugriff auf unberechtigte Seiten über die URL
+//falls man nicht angemeldet ist, kann nicht auf die Userseiten zugegriffen werden
+//falls man keine Admin-Rolle hat, kann nicht auf die Adminseite zugegriffen werden
+//Die Datei wird auf allen Seiten verwendet, die eine Anmeldung/Rolle erfordern
+
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }

@@ -1,4 +1,7 @@
 <?php
+//Diese Datei enthält den header, der auf jeder Seite miteingebunden wird.
+//Die Navbar wird angepasst je nachdem, ob man angemeldet ist/Admin ist oder nicht angemeldet.
+
 session_start();
 require_once '../classes/UserLogic.php';
 require_once '../security.php';

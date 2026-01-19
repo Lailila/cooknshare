@@ -1,5 +1,4 @@
-<!-- Das könnten wir auf jeder Seite einbinden, die die Rezepte enthält, also mainpage, Favoriten und Meine Rezepte und je nachdem ein anderes statement schreiben und entweder alle Rezepte aus der DB holen (mainpage), nur die eigenen mit userId (meine Rezepte) oder auch mit userId (Favoriten)
-Dann noch mit deinem css stylen, dann ist es überall gleich -->
+<!-- Diese Datei enthält die Recipe-Card, die auf mehreren Seiten in einer foreach Schleife dargestellt wird (mainpage, favorites, meine Rezepte) und wird daher immer eingebunden mit angepasster DB Abfrage -->
 <div class="container text-center contents">
   <?php if (isset($displayUsername)) : ?>
     <h2 class="page-title mb-5"><?= htmlspecialchars($title) ?></h2>
@@ -13,6 +12,7 @@ Dann noch mit deinem css stylen, dann ist es überall gleich -->
     <?php foreach ($recipes as $recipe): ?>
       <div class="col-12 col-lg-4 mb-4">
         <div class="card h-100 recipe-card">
+<!-- Rezept-Id wird in URL mitgegeben, um das richtige Rezept bei recipe.php darzustellen-->
           <a href="../pages/recipe.php?id=<?= (int)$recipe['id'] ?>"
             class="text-decoration-none text-dark d-block h-100">
 

@@ -1,3 +1,4 @@
+<!-- Diese Datei ist der Footer, der auf jeder Seite eingebunden wird. -->
 </main>
 <footer class="site-footer">
   <div class="container">
