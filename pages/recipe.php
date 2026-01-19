@@ -2,6 +2,9 @@
 //Diese Datei enthält die Rezeptdetailseite. Die Rezeptid wird per URL mitgeschickt und dann das entsprechende Rezept und Kommentare aus der DB geladen
 //Das Rezept kann mittels Favoriten Button als Favorit markiert werden und wird in DB gespeichert
 //Es können Kommentare geschrieben und eigene auch gelöscht werden
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
   $title = 'Rezept';
   require_once "../DB/DBconnect.php";
   include "../includes/header.php";
@@ -72,8 +75,6 @@
     header("Location: recipe.php?id=" . $recipeId);
     exit;
   }
-  $stmt = connect()->prepare("INSERT INTO comments (recipe_id, user_id, comment, created_at) VALUES (?, ?, ?, NOW())");
-  $stmt->execute([$recipeId, $userId, $comment]);
 
   $id = $_GET['id'] ?? null;  //rezept id in der URL
   
@@ -184,11 +185,17 @@
           <?php if(!empty($userId)): ?>
             <form method="POST" class="mt-3">
               <input type="hidden" name="recipe_id" value="<?= (int)$recipe['id'] ?>">
-              <button type="submit" name="btn_delete_comment" class="btn btn-sm btn-outline-danger">Kommentar löschen</button>
-            </form>
+              <div class="mb-3">
+                <label for="comment" class="form-label">Dein Kommentar</label>
+                <textarea class="form-control" name="comment" id="comment" rows="3" required></textarea>
+              </div>
+            <button type="submit" name="btn_comment" class="btn btn-primary">
+              Kommentar absenden
+            </button>
+          </form>
+          <?php else: ?>
+            <p class="text-muted mt-3">Bitte einloggen, um einen Kommentar zu schreiben.</p>
           <?php endif; ?>
         </section>
       </div>
-<?php include "../includes/footer.php"; ?>
-
 <?php include "../includes/footer.php"; ?>
