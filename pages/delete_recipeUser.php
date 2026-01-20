@@ -1,4 +1,6 @@
-<?php 
+<?php
+//Diese Datei wird aufgerufen wenn der User ein Rezept löscht(auf MyRecipe.php)
+
 require __DIR__ . "/../includes/secure.php";
 require_once __DIR__ . "/../DB/DBconnect.php";
 
@@ -15,10 +17,9 @@ $stmt->execute([$recipeId]);
 $imagePath = $stmt->fetchColumn();
 //Bild löschen
 if(!empty($imagePath)){
-  $serverPath = $_SERVER['DOCUMENT_ROOT'] . $imagePath;
-
+  $serverPath = $_SERVER['DOCUMENT_ROOT'] . $imagePath;//absoluter Serverpfad, da direkter Zugriff auf Dateisystem mit unlink()
   if(file_exists($serverPath)){
-    unlink($serverPath);
+    unlink($serverPath);//Löscht Bild irreversibel
   }
 }
 

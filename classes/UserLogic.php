@@ -1,11 +1,11 @@
 <?php
-
+//Diese Datei enthält eine Klasse namens UserLogic. In der sind Funktionen, die zum Login- und registrierungs-Funktion verwendet werden.
 require_once '../DB/DBconnect.php';
 
 class UserLogic
 {
   /**
-   * User registrieren
+   * ein Konto erstellen
    * @param array $userData
    * @return bool $result
    */
@@ -33,7 +33,6 @@ class UserLogic
       if (str_contains($e->getMessage(), 'username')) {
         $_SESSION['err']['username'] = 'Dieser Benutzername ist bereits vergeben.';
       }
-
       if (str_contains($e->getMessage(), 'email')) {
         $_SESSION['err']['email'] = 'Diese E-Mail-Adresse ist bereits vergeben.';
       }
@@ -111,9 +110,7 @@ class UserLogic
     if (isset($_SESSION['login_user']) && $_SESSION['login_user']['id'] > 0) {
       return $result = true;
     }
-
     return $result;
-
   }
 
   /**

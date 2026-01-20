@@ -1,5 +1,4 @@
 <?php
-
 /**
  * XSS protection:escape
  * 

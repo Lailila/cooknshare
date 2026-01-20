@@ -1,11 +1,11 @@
 <?php
-
+//Diese Datei enthält eine Klasse namens db_access. In der sind Funktionen, die zum Datei-Upload, Bearbeiten und um Rezeptdaten zu holen verwendet werden.
 require_once '../DB/DBconnect.php';
 
 class db_access
 {
   /**
-   * fileDaten speichern
+   * fileDaten speichern(upload.php)
    * @param string $filename
    * @param string $save_path
    * @param string $title
@@ -37,7 +37,7 @@ class db_access
 
 
   /**
-   * Rezeptdaten anhand der Benutzer-ID des angemeldeten Benutzers abrufen
+   * Alle Rezeptdaten anhand der Benutzer-ID des angemeldeten Benutzers abrufen(MyRecipe.php)
    * @param string $user_id
    * @return array|bool $recipe|false
    */
@@ -56,7 +56,11 @@ class db_access
 
 
 
-
+  /**
+   * das neueste Rezept-Bildpfad anhand der Benutzer-ID des angemeldeten Benutzers abrufen(dashboard.php)
+   * @param string $user_id
+   * @return array|bool $recipe|false
+   */
   public static function getLatestRecipeImagePathByUserId($user_id)
   {
     $sql = '
@@ -79,7 +83,7 @@ class db_access
 
 
   /**
-   * Favoriten anhand der Benutzer-ID des angemeldeten Benutzers abrufen
+   * Alle Favoriten anhand der Benutzer-ID des angemeldeten Benutzers abrufen(favorite.php)
    * @param string $user_id
    * @return array|bool $recipe|false
    */
@@ -101,6 +105,11 @@ class db_access
     }
   }
 
+  /**
+   * die neuste Bildpfad von Favoritenliste anhand der Benutzer-ID des angemeldeten Benutzers abrufen(dashboard.php)
+   * @param string $user_id
+   * @return array|bool $recipe|false
+   */
   public static function getLatestFavImagePathByUserId($user_id)
   {
     $sql = '
@@ -125,8 +134,7 @@ class db_access
 
 
   /**
-   * 
-   * 
+   * Rezeptdaten aktualisiren
    */
   public static function updateRecipe(
     int $recipe_id,
@@ -179,9 +187,4 @@ class db_access
 
     return $stmt->execute();
   }
-
-
-  /**
-   * eine Rezept löschen
-   */
 }

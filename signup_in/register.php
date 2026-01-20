@@ -1,8 +1,11 @@
 <?php
+//Diese Datei enthält die Registrieren-Seite. Sie wird aufgeruft, wenn das Anmelden-Button auf RegistrierungsSeite geklickt wird.
+//Hier wird es geprüft, ob die Eingabe leer ist und ob der eingegebenen Benutzernamen schon in DB vorhanden ist. wenn ja, wird der Browser auf signUp-Seite zurückgeleitet.
+//Beim erfolgreichen Registrieren wird diese Seite geöffnet und eine Erfolgreich-Nachricht wird angezeigt.
 session_start();
 require_once '../classes/UserLogic.php';
 
-//CheckLogin ist eine Klasse, um es zu prüft, ob man eingeloggt ist. Wenn ja, gibt sie true zurück. Sonst falsch.
+//eine Funktion, um es zu prüft, ob man eingeloggt ist. Wenn ja, gibt sie true zurück. Sonst falsch.
 $result = UserLogic::checkLogin();
 
 //wenn man schon eingeloggt ist, wird der Browser auf dashboard.php weitergeleitet.
@@ -11,14 +14,13 @@ if ($result) {
   return;
 }
 
-
 $err = [];
 
+//CSRF Schutz
 $token = filter_input(INPUT_POST, 'csrf_token');
 if (!isset($_SESSION['csrf_token']) || $token !== $_SESSION['csrf_token']) {
   exit('ungültige Anfrage');
 }
-
 unset($_SESSION['csrf_token']);
 
 // Validation

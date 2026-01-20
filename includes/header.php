@@ -51,7 +51,7 @@ $is_login = UserLogic::checkLogin();
           </li>
         </ul>
       </nav>
-      <!-- für Handy-Bildschirm -->
+      <!-- Hamburger-menu für Handygröße-Bildschirm -->
       <button class="hamburger">
         <span></span>
         <span></span>

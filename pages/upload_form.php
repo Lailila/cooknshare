@@ -1,4 +1,6 @@
 <?php
+//Diese Datei enthält die Upload-Seite, auf der kann man ein Rezept hochladen. Da müssen Titel, Zutaten, Anleitung, Kategorie und eine Bild-Datei eingegeben/ausgewählt werden.
+//wenn man das hochladen-Button klickt, wird der Browser auf upload.php weiter geleitet und wird es geprüft, ob nichts leer ist. Falls was leer ist, wird diese Seite zurückgeleitet und kommen Fehlermeldungen vor(Validation).
 session_start();
 require_once '../classes/UserLogic.php';
 require_once '../classes/db_access.php';
@@ -14,16 +16,13 @@ if (!$result) {
 $err_msgs = $_SESSION['err_msgs'] ?? [];
 unset($_SESSION['err_msgs']);
 
+//eingegebene Inhalte behalten
 $old = $_SESSION['old'] ?? [];
 unset($_SESSION['old']);
-
-// require_once '../DB/DBconnect.php';
-// $files = db_access::getAllFile();
 
 
 $title = 'Upload';
 include "../includes/header.php";
-
 ?>
 
 <div class="upload container main-wrap">
@@ -35,6 +34,7 @@ include "../includes/header.php";
         <label class="fs-4 mb-2" for="rezept-title">Titel:</label>
         <input class="form-control" type="text" id="rezept-title" name="title" value="<?php echo htmlspecialchars($old['title'] ?? '', ENT_QUOTES); ?>">
 
+        <!-- Fehlermeldung für Titel -->
         <?php if (isset($err_msgs['title'])) : ?>
           <p class="text-danger"><?php echo $err_msgs['title']; ?></p>
         <?php endif; ?>
@@ -56,15 +56,17 @@ include "../includes/header.php";
           <input type="radio" id="category3" name="category" value="dessert" <?php if (($old['category'] ?? '') === 'dessert') echo 'checked'; ?>>
           <label for="category3">Nachspeise</label>
         </div>
+
+        <!-- Fehlermeldung für Kategorie -->
         <?php if (isset($err_msgs['category'])) : ?>
           <p class="text-danger"><?php echo $err_msgs['category']; ?></p>
         <?php endif; ?>
       </div>
 
-
       <div class="mb-3">
         <label for="rezept-zutaten" class="fs-4 mb-2">Zutaten:</label>
         <textarea class="form-control" id="rezept-zutaten" placeholder="100g Mehl, 1 Ei, 30g Zucker, ..." name="ingredients" value="<?php echo htmlspecialchars($old['ingredients'] ?? '', ENT_QUOTES); ?>"></textarea>
+        <!-- Fehlermeldung für Zutaten -->
         <?php if (isset($err_msgs['ingredients'])) : ?>
           <p class="text-danger"><?php echo $err_msgs['ingredients']; ?></p>
         <?php endif; ?>
@@ -76,7 +78,7 @@ include "../includes/header.php";
 Die Chilischote entkernen und ebenso fein hacken.
 Die Kirschtomaten waschen und halbieren...
 "><?php echo htmlspecialchars($old['description'] ?? '', ENT_QUOTES); ?></textarea>
-
+        <!-- Fehlermeldung für Anleitung -->
         <?php if (isset($err_msgs['description'])) : ?>
           <p class="text-danger"><?php echo $err_msgs['description']; ?></p>
         <?php endif; ?>
@@ -85,13 +87,13 @@ Die Kirschtomaten waschen und halbieren...
         <label for="formFile" class="form-label fs-4 mb-2">Bild hochladen</label>
         <input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
         <input class="form-control" type="file" id="formFile" accept="image/*" name="img">
+        <!-- Fehlermeldung für Bilddatei -->
         <?php if (isset($err_msgs['filesize'])) : ?>
           <p class="text-danger"><?php echo $err_msgs['filesize']; ?></p>
         <?php endif; ?>
         <?php if (isset($err_msgs['file_type'])) : ?>
           <p class="text-danger"><?php echo $err_msgs['file_type']; ?></p>
         <?php endif; ?>
-
       </div>
 
       <div class="d-grid gap-2">

@@ -1,4 +1,6 @@
 <?php
+//Auf dieser Seite kann man ein Rezept bearbeiten. In jedem Formular werden die originelle Inhalt behalten, aber eine Bild-Datei muss wieder ausgewählt werden.
+//wenn man das Aktualisieren-Button klickt, wird der Browser auf update_recipe.php weiter geleitet und wird es geprüft, ob nichts leer ist(wie upload-form). Falls was leer ist, wird diese Seite zurückgeleitet und kommen Fehlermeldungen vor(Validation).
 session_start();
 require_once '../classes/db_access.php';
 require_once '../classes/UserLogic.php';
@@ -10,6 +12,7 @@ if (!UserLogic::checkLogin()) {
   exit;
 }
 
+//wenn man z.B. auf der Adressleiste "http://localhost/cooknshare/pages/edit_recipe_form.php" eingibt, wird der Browser auf MyRecipe.php weitergeleitet.
 if (!isset($_GET['id'])) {
   header('Location: MyRecipe.php');
   exit;
@@ -18,16 +21,17 @@ if (!isset($_GET['id'])) {
 $err_msgs = $_SESSION['err_msgs'] ?? [];
 unset($_SESSION['err_msgs']);
 
+//wenn was leer ist und wird der Browser auf diese Seite zurückgeleitet, werden Eingaben behalten
 $old = $_SESSION['old'] ?? [];
 unset($_SESSION['old']);
 
-
 $userId = $_SESSION['login_user']['id'];
+//Die ID des geklickten Rezeptes wird aus der URL gelesen und in eine Zahl umgewandelt
 $recipe_id = (int)$_GET['id'];
 
+//auf DB zugreifen
 $pdo = connect();
-
-//nur sein eigenes Rezept aus DB fetchen
+//das entsprechende Rezept anhand der Rezept-ID und der User-ID aus DB abrufen
 $stmt = $pdo->prepare("
   SELECT id, title, category, image_path, ingredients, description
   FROM recipes
@@ -37,7 +41,6 @@ $stmt->execute([
   ':id' => $recipe_id,
   ':user_id' => $userId
 ]);
-
 $recipe = $stmt->fetch();
 
 
@@ -46,6 +49,7 @@ if (!$recipe) {
   exit;
 }
 
+//wenn $old vorhanden ist, ist $form $old, sonst ist es $recipe
 $form = array_merge($recipe, $old);
 
 $title = 'Rezept bearbeiten';
@@ -113,6 +117,7 @@ include "../includes/header.php";
         <?php if (isset($err_msgs['file_type'])) : ?>
           <p class="text-danger"><?php echo $err_msgs['file_type']; ?></p>
         <?php endif; ?>
+        <!-- das ID vom Rezept senden -->
         <input type="hidden" name="recipe_id" value="<?= $recipe_id ?>">
       </div>
       <div class="d-grid gap-2">

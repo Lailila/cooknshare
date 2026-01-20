@@ -1,4 +1,7 @@
 <?php
+//Diese Datei wird aufgerufen, wenn man Logout klickt.
+//es wird geprüft, ob man eingeloggt ist.
+//Nach dem erfolgreichen Logout wird der Browser auf Login_Seite weitergeleitet
 session_start();
 require_once '../classes/UserLogic.php';
 
@@ -7,14 +10,12 @@ if (!$logout = filter_input(INPUT_POST, 'logout')) {
 }
 
 //prüft, ob man eingeloggt ist.
-$result = UserLogic::checkLogin();
-
-if (!$result) {
-  // exit('Ihre Session ist abgelaufen. Bitte melden Sie sich erneut an.');
+$is_login = UserLogic::checkLogin();
+if (!$is_login) {
   header('Location: login_form.php');
 }
 
-// Logout
+// eine Funktion zum Logout
 UserLogic::logout();
 
 header('Location: login_form.php');

@@ -1,9 +1,8 @@
 <?php
+//Diese Datei enthält eine Funktion, um auf Datenbank zu zugreifen
 require_once 'env.php';
-
 function connect()
 {
-
   $host = DB_HOST;
   $db = DB_NAME;
   $user = DB_USER;

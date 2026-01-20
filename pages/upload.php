@@ -1,6 +1,8 @@
 <?php
+//Der Browser wird auf diese Seite weitergeleitet, wenn man auf der Upload-Seite das hochladen-Button klickt, und da wird es geprüft, ob nichts vom Upload-Formular leer ist. Falls was leer ist, wird der Browser auf die Upload-Seite zurückgeleitet.
+//Ansonsten werden die eingegebene Daten gspeichert.
+//Sobald der Datei-Upload erfolgreich abgeschlossen ist, wird der browser auf  eigene Rezeptlist-Seite weitergeleitet.
 session_start();
-
 require_once '../classes/UserLogic.php';
 require_once '../classes/db_access.php';
 require_once "../DB/DBconnect.php";
@@ -12,6 +14,7 @@ if (!$result) {
   return;
 }
 
+//die eingegebene Daten als Variablen setzen
 $user_id = $_SESSION['login_user']['id'];
 $file = $_FILES['img'];
 $filename = basename($file['name']);
@@ -23,8 +26,6 @@ $save_filename = date('YmdHis') . $filename;
 $err_msgs = array();
 $save_path = $upload_dir . '/' . $save_filename;
 $view_path = '/cooknshare/uploads/recipes/' . $save_filename;
-
-
 
 $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
 $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -39,7 +40,6 @@ if (empty($title)) {
 if (strlen($title) > 255) {
   $err_msgs['title_size'] = 'Bitte geben Sie Titel mit maximal 255 Zeichen ein.';
 }
-
 // Validation für Kategorien
 if (empty($category)) {
   $err_msgs['category'] = 'Bitte wählen Sie eine Kategorie aus';
@@ -58,17 +58,17 @@ if (empty($description)) {
 // Validation für Datei
 // Ist die Größe der Datei unter 1MB?
 if ($filesize > 1048576 || $file_err == 2) {
-  $err_msgs['filesize'] = 'Bitte wählen Sie eine Datei, der Dateigröße weniger als 1 MB ist.';
+  $err_msgs['filesize'] = 'Bitte wählen Sie eine Datei, der Dateigröße kleiner als 1 MB ist.';
 }
 
 // erlaubte Extentionen
 $allow_ext = array('jpg', 'jpeg', 'png', 'webp');
+//nur die Dateiendung(Extention) aus dem Dateinamen extrahieren
 $file_ext = pathinfo($filename, PATHINFO_EXTENSION);
 
 //prüft, ob es $allow_ext in $file_ext gibt
 if (!in_array(strtolower($file_ext), $allow_ext)) {
-  // array_push($err_msgs, 'Bitte fügen Sie eine Bilddatei bei.');
-  $err_msgs['file_type'] = 'Bitte fügen Sie eine Bilddatei bei.(.jpg, jpeg, .png oder .webp)';
+  $err_msgs['file_type'] = 'Bitte wählen Sie eine gültige Bilddatei aus.(.jpg, jpeg, .png oder .webp)';
 }
 
 
@@ -89,13 +89,9 @@ if (count($err_msgs) > 0) {
 } else {
   if (is_uploaded_file($tmp_path)) {
     if (move_uploaded_file($tmp_path, $save_path)) {
-
-      // echo $filename . 'wurde auf' . $upload_dir . 'hochgeladen';
-
       // in DB speichern (filename, filepath, title, category, ingredients, description)
       $result = db_access::fileSave($user_id, $view_path, $title, $category, $ingredients, $description);
       if ($result) {
-        // echo 'in DB gespeichert';
         header('Location: ./MyRecipe.php');
       } else {
         echo 'Error! Die Datei wurde in DB nicht gespeichert!';
@@ -108,6 +104,4 @@ if (count($err_msgs) > 0) {
     echo '<br>';
   }
 }
-
-var_dump($_FILES['img']);
 exit;

@@ -1,6 +1,8 @@
 <?php
+//Der Browser wird auf diese Seite weitergeleitet, wenn man auf der bearbeiten-Seite das aktualisieren-Button klickt, und es wird geprüft, ob nichts vom Upload-Formular leer ist. Falls was leer ist, wird der Browser auf die bearbeiten-Seite zurückgeleitet.
+//Ansonsten werden die eingegebene Daten gespeichert.
+//Sobald der Datei-aktualisieren erfolgreich abgeschlossen ist, wird der browser auf eigene Rezeptlist-Seite weitergeleitet.
 session_start();
-
 require_once '../classes/UserLogic.php';
 require_once '../classes/db_access.php';
 require_once "../DB/DBconnect.php";
@@ -12,15 +14,10 @@ if (!UserLogic::checkLogin()) {
   return;
 }
 
-if (!isset($_POST['recipe_id'])) {
-  header('Location: MyRecipe.php');
-  exit;
-}
-
-
+//die per POST gesendete recipe_id in einen int-Wert konvertieren
 $recipe_id = (int)$_POST['recipe_id'];
-$user_id   = $_SESSION['login_user']['id'];
 
+$user_id   = $_SESSION['login_user']['id'];
 
 $title     = $_POST['title'];
 $category  = $_POST['category'];
@@ -28,10 +25,7 @@ $ingredients = trim($_POST['ingredients']);
 $description = trim($_POST['description']);
 
 $err_msgs = [];
-
 $file = $_FILES['img'] ?? null;
-
-
 
 $filesize = $file['size'];
 $file_err = $file['error'];
@@ -40,7 +34,6 @@ $upload_dir = __DIR__ . '/../uploads/recipes/';
 $save_filename = date('YmdHis') . $filename;
 $save_path = $upload_dir . '/' . $save_filename;
 $view_path = '/cooknshare/uploads/recipes/' . $save_filename;
-
 
 
 // Validation für title
@@ -97,7 +90,9 @@ if (count($err_msgs) > 0) {
   exit;
 }
 
+//wenn das Upload richtig abgeschlossen wurde
 if (move_uploaded_file($_FILES['img']['tmp_name'], $save_path)) {
+  //eine Funktion abrufen
   db_access::updateRecipe(
     $recipe_id,
     $user_id,
