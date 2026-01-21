@@ -1,6 +1,7 @@
 <!-- Diese Datei enthält die Recipe-Card, die auf mehreren Seiten in einer foreach Schleife dargestellt wird (mainpage, favorites, meine Rezepte) und wird daher immer eingebunden mit angepasster DB Abfrage -->
 <div class="container text-center contents">
-  <?php if (isset($displayUsername)) : ?>
+
+  <?php if (isset($displayUsername)) : ?><!-- nur auf favorit.php und MyRecipe.php -->
     <h2 class="page-title mb-5"><?= htmlspecialchars($title) ?></h2>
   <?php endif; ?>
 
@@ -59,8 +60,6 @@
               </div>
             <?php endif; ?>
           </div>
-
-
         </div>
       </div>
     <?php endforeach; ?>

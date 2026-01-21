@@ -23,8 +23,8 @@ $comments = connect()->query("
 
 $currentPage = 'admin';
 include __DIR__ . "/../includes/header.php"; ?>
-  <div class="container-fluid p-5">
-    <h3 class="text-center mb-3">User</h3>
+  <div class="container text-center contents">
+    <h2 class="page-title mb-5">User</h2>
 <!-- User Tabelle -->
     <table class="table table-hover mb-5">
       <tr>
